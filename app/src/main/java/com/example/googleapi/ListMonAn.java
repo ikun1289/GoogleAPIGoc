@@ -38,6 +38,7 @@ public class ListMonAn extends AppCompatActivity {
         monAnList = new ArrayList<>();
         myDB = new DatabaseHelper(this);
         LayDanhSachMonAn();
+        int i;
 
         adapter = new MonAnAdapter(this, R.layout.dong_monan, monAnList);
         lvMonAn.setAdapter(adapter);
