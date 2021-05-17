@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtTenQuan_listmonan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Tên quán"
+        android:textSize="26dp"
+        android:textStyle="bold"
+        android:textColor="@color/green_500"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
+        android:id="@+id/txtMoTa_listmonan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Mô tả: ............"
+        android:textSize="16dp"
+        android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/txtGioHoatDong_listmonan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Giờ mở cửa: ............"
+        android:textSize="16dp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/txtLatlng_listmonan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Lat - Lng"
+        android:textSize="16dp"
+        android:textColor="@color/black"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Thực đơn"
+        android:textSize="20dp"
+        android:textColor="@color/green_500"
+        android:layout_gravity="center_horizontal"/>
+
+    <ListView
+        android:id="@+id/listViewMonAn"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@null"
+        android:dividerHeight="1dp" />
+
+</LinearLayout>

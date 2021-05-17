@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:id="@+id/g1">
+        <item
+            android:id="@+id/nav_QuanAn"
+            android:title="Quán ăn của mình" />
+    </group>
+
+    <group android:id="@+id/g2">
+        <item
+            android:id="@+id/nav_moQuan"
+            android:title="Đăng ký quán ăn" />
+    </group>
+
+    <group android:id="@+id/g3">
+        <item
+            android:id="@+id/nav_dangnhap"
+            android:title="Đăng nhập" />
+    </group>
+
+    <group android:id="@+id/g4">
+        <item
+            android:id="@+id/nav_yeuthich"
+            android:title="Quán ăn yêu thích" />
+    </group>
+
+    <group android:id="@+id/g5">
+        <item
+            android:id="@+id/nav_about"
+            android:title="About" />
+    </group>
+
+    <group android:id="@+id/g6">
+        <item
+            android:id="@+id/nav_Contact"
+            android:title="Contact Us" />
+    </group>
+
+
+</menu>
