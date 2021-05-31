@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -33,7 +34,7 @@ public class PermissionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_permission);
 
         if(ContextCompat.checkSelfPermission(PermissionActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
-            startActivity(new Intent(PermissionActivity.this, MainActivity.class));
+            startActivity(new Intent(PermissionActivity.this, LoginActivity.class));
             finish();
             return;
         }
@@ -43,7 +44,7 @@ public class PermissionActivity extends AppCompatActivity {
                     .withListener(new PermissionListener() {
                         @Override
                         public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                            startActivity(new Intent(PermissionActivity.this, MainActivity.class));
+                            startActivity(new Intent(PermissionActivity.this, LoginActivity.class));
                             finish();
                         }
 

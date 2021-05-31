@@ -1,33 +1,31 @@
-package com.example.googleapi;
+package com.example.googleapi.NguoiDung;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.CursorWindow;
 import android.location.Location;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.googleapi.Adapter.QuanAnAdapter;
+import com.example.googleapi.BottomSheetListView;
+import com.example.googleapi.DatabaseHelper;
+import com.example.googleapi.Models.QuanAn;
+import com.example.googleapi.R;
+import com.example.googleapi.StringSimilarity;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -43,7 +41,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,14 +49,16 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
-import java.io.Serializable;
+import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +83,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     BottomSheetListView listViewQuanAn;
     BottomSheetDialog dialog;
     ArrayList<QuanAn> quanAnArrayList;
+    ArrayList<QuanAn> quanAnSearchList;
     QuanAnAdapter adapter;
+    Cursor res;
+
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
     private final float DEFAULT_ZOOM = 18;
 
@@ -98,6 +101,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         AnhXa();
         //
 
+        try {
+            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+            field.setAccessible(true);
+            field.set(null, 100 * 1024 * 1024); //the 100MB is the new size
+        } catch (Exception e) {
+            if (e!=null) {
+                e.printStackTrace();
+            }
+        }
+
+        quanAnSearchList = new ArrayList<>();
         myDB = new DatabaseHelper(this);
         //Tạo những thứ liên quan tới google map API
         markerList = new ArrayList<>();
@@ -118,8 +132,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         toggle.syncState();
 
         //Hiện danh sách quán ăn bằng dialog bottomsheet
-        Cursor res = myDB.getAllDataFromQuanAn();
-        ThemVaoDachSachQuanAn(res);
+        ThemVaoDachSachQuanAn();
 
         //listener của btn tìm quán ăn gần nhất
         btnFind.setOnClickListener(v -> {
@@ -127,25 +140,25 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //            LatLng CHoRachGoi = new LatLng(9.896942, 105.664609);
 //            mapAPI.addMarker(new MarkerOptions().position(CHoRachGoi).title("Chợ Rạch Gòi"));
 //            mapAPI.moveCamera(CameraUpdateFactory.newLatLng(CHoRachGoi));
-            markerList.clear();
-            mapAPI.clear();
-            if (quanAnArrayList.size() == 0) {
-                Toast.makeText(MainActivity.this, "NO DATA", Toast.LENGTH_SHORT).show();
-            } else {
-                for (int i = 0; i < quanAnArrayList.size(); i++) {
-                    QuanAn quanAn = quanAnArrayList.get(i);
-                    LatLng pos = new LatLng(Double.parseDouble(quanAn.Lat), Double.parseDouble(quanAn.Lng));
-                    markerList.add(mapAPI.addMarker(new MarkerOptions().position(pos).title(quanAn.TenQuan)));
-                }
-            }
-            mapAPI.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnowLocation.getLatitude(),
-                    mLastKnowLocation.getLongitude()), DEFAULT_ZOOM));
+//            markerList.clear();
+//            mapAPI.clear();
+//            if (quanAnArrayList.size() == 0) {
+//                Toast.makeText(MainActivity.this, "NO DATA", Toast.LENGTH_SHORT).show();
+//            } else {
+//                for (int i = 0; i < quanAnArrayList.size(); i++) {
+//                    QuanAn quanAn = quanAnArrayList.get(i);
+//                    LatLng pos = new LatLng(Double.parseDouble(quanAn.Lat), Double.parseDouble(quanAn.Lng));
+//                    markerList.add(mapAPI.addMarker(new MarkerOptions().position(pos).title(quanAn.TenQuan)));
+//                }
+//            }
+//            mapAPI.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnowLocation.getLatitude(),
+//                    mLastKnowLocation.getLongitude()), DEFAULT_ZOOM));
 
 
             //cập nhật adapter bằng danh sách quán ăn mới lấy ra ở bước trên
             //
 
-            listViewQuanAn.deferNotifyDataSetChanged();
+            adapter.notifyDataSetChanged();
             dialog.show();
         });
 
@@ -161,7 +174,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onSearchConfirmed(CharSequence text) {
-                startSearch(text.toString(), true, null, true);
+                //startSearch(text.toString(), true, null, true);
+                Search(text.toString());
             }
 
             @Override
@@ -176,6 +190,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
 
         //textChangeListener tạo auto prediction place
 //        materialSearchBar.addTextChangeListener(new TextWatcher() {
@@ -234,6 +249,22 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //        });
     }
 
+    private void Search(String toString) {
+        Toast.makeText(getApplicationContext(),"Search",Toast.LENGTH_SHORT).show();
+        quanAnSearchList = new ArrayList<>();
+        for (QuanAn i:quanAnArrayList
+             ) {
+            double x = StringSimilarity.similarity(toString,i.TenQuan);
+            if(x > 0.6)
+            {
+                Log.d("Search","Giống " + x);
+                quanAnSearchList.add(i);
+            }
+            else Log.d("Search","Không giống " + x);
+        }
+    }
+
+
     public void AnhXa() {
         materialSearchBar = findViewById(R.id.searchBar);
         btnFind = findViewById(R.id.btn_find);
@@ -243,25 +274,29 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void ThemVaoDachSachQuanAn(Cursor res) {
+    public void ThemVaoDachSachQuanAn() {
         dialog = new BottomSheetDialog(this, R.style.SheetDialog);
         dialog.setContentView(R.layout.restaurant_bottom_sheet_layout);
         listViewQuanAn = (BottomSheetListView) dialog.findViewById(R.id.listViewBtmSheet);
         quanAnArrayList = new ArrayList<>();
 
-        if (res.getCount() == 0) {
-            Toast.makeText(MainActivity.this, "NO DATA", Toast.LENGTH_SHORT).show();
-        } else {
-            while (res.moveToNext()) {
-                quanAnArrayList.add(new QuanAn(res.getInt(0)
-                        , res.getString(1)
-                        , res.getString(2)
-                        , res.getString(3)
-                        , res.getString(4)
-                        , res.getString(5)
-                        , res.getString(6)));
+        firebaseFirestore.collection("QuanAn").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    for(QueryDocumentSnapshot documentSnapshot: task.getResult())
+                    {
+                        QuanAn quanAn = documentSnapshot.toObject(QuanAn.class);
+                        quanAn.ID = documentSnapshot.getId();
+                        quanAnArrayList.add(quanAn);
+                        Log.i("Firebase","OK "+quanAn.ID);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+                else Log.i("Firebase","Không OK");
             }
-        }
+        });
 
 
         adapter = new QuanAnAdapter(this, R.layout.dong_quanan, quanAnArrayList);
@@ -274,7 +309,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             Intent intent = new Intent(MainActivity.this, ListMonAn.class);
             Bundle b = new Bundle();
             QuanAn quanAn = quanAnArrayList.get(position);
-            b.putInt("IDQuanAn", quanAnArrayList.get(position).IDQuanAn);
+            b.putString("IDQuanAn", quanAnArrayList.get(position).ID);
             b.putSerializable("QuanAn", quanAn);
             intent.putExtras(b);
             startActivity(intent);
@@ -395,6 +430,5 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
     }
-
-
 }
+

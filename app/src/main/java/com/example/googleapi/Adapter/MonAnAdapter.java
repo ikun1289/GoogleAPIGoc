@@ -1,12 +1,18 @@
-package com.example.googleapi;
+package com.example.googleapi.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.googleapi.Models.MonAn;
+import com.example.googleapi.R;
 
 import java.util.List;
 
@@ -45,12 +51,14 @@ public class MonAnAdapter extends BaseAdapter {
         TextView txtTenMonAn = convertView.findViewById(R.id.txtTenMonAn);
         TextView txtMoTaMonAn = convertView.findViewById(R.id.txtMoTaMonAn);
         TextView txtGia = convertView.findViewById(R.id.txtGia);
+        ImageView imgMonAn = convertView.findViewById(R.id.imvMonAn);
 
         //gán
         MonAn monAn = monAnList.get(position);
         txtTenMonAn.setText(monAn.TenMonAn);
         txtMoTaMonAn.setText(monAn.MoTa);
         txtGia.setText(monAn.Gia+" đồng");
+
 
 
         return convertView;

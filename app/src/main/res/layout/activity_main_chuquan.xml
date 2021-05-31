@@ -11,7 +11,7 @@
     tools:openDrawer="start">
 
     <fragment
-        android:id="@+id/mapAPI"
+        android:id="@+id/mapAPI_chuquan"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,38 +28,22 @@
             android:src="@drawable/ic_google_maps"
             android:translationY="-18dp"/>
 
-        <com.mancj.materialsearchbar.MaterialSearchBar
-            android:id="@+id/searchBar"
-            style="@style/MaterialSearchBarLight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="180dp"
-            android:elevation="5dp"
-            android:outlineSpotShadowColor="@color/green_500"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:mt_hint="Search a place"
-            app:mt_maxSuggestionsCount="5"
-            app:mt_navIconEnabled="true"
-            app:mt_placeholder="Seach a place"
-            app:mt_placeholderColor="#CACACA"
-            app:mt_speechMode="false" />
+
 
         <Button
-            android:id="@+id/btn_find"
+            android:id="@+id/btn_quanan_chuquan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_margin="16dp"
             android:background="@color/green_500"
-            android:text="Find all nearby restaurants"
+            android:text="Quán ăn của bạn"
             android:textColor="@color/green_100" />
 
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView_chuquan"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

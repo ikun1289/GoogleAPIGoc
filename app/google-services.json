@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "455520678109",
+    "firebase_url": "https://mapapi-e13ad-default-rtdb.firebaseio.com",
+    "project_id": "mapapi-e13ad",
+    "storage_bucket": "mapapi-e13ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455520678109:android:e1781caedc97d7e32feb34",
+        "android_client_info": {
+          "package_name": "com.example.googleapi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455520678109-trmh79mredk2eev1eufdvial7va00363.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAE0nhBx39626aAnEQECM_gnoJWPrXHVM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455520678109-trmh79mredk2eev1eufdvial7va00363.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
