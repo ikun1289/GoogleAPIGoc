@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NguoiDung.MainActivity"
+    tools:visibility="visible"
+    android:id="@+id/drawer_layout_chuquan"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <fragment
+        android:id="@+id/mapAPI_chuquan"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_google_maps"
+            android:translationY="-18dp"/>
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/searchBar_chuquan"
+            style="@style/MaterialSearchBarLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="180dp"
+            android:elevation="5dp"
+            android:outlineSpotShadowColor="@color/green_500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:mt_hint="Search a place"
+            app:mt_maxSuggestionsCount="5"
+            app:mt_navIconEnabled="true"
+            app:mt_placeholder="Seach a place"
+            app:mt_placeholderColor="#CACACA"
+            app:mt_speechMode="false" />
+
+
+        <Button
+            android:id="@+id/btn_find_chuquan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:background="@color/green_500"
+            android:text="Tìm các quán ăn gần đây"
+            android:textColor="@color/green_100" />
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

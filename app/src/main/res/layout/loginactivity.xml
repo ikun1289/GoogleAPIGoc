@@ -21,7 +21,7 @@
         android:id="@+id/btnTestFirebase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button test chu quan" />
+        android:text="Button test firebase" />
     <ListView
         android:id="@+id/lvTest"
         android:layout_width="match_parent"

@@ -4,43 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NguoiDung.MainActivity"
+    tools:context=".ChuQuan.MainChuQuan"
     tools:visibility="visible"
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <fragment
-        android:id="@+id/mapAPI_chuquan"
-        class="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_google_maps"
-            android:translationY="-18dp"/>
+        <FrameLayout
+            android:id="@+id/fragment_container_chuquan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_nav_chuquan">
+
+        </FrameLayout>
 
 
-
-        <Button
-            android:id="@+id/btn_quanan_chuquan"
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav_chuquan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"
-            android:background="@color/green_500"
-            android:text="Quán ăn của bạn"
-            android:textColor="@color/green_100" />
+            app:menu="@menu/bottom_menu_chuquan"/>
 
     </RelativeLayout>
+
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView_chuquan"

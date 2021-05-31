@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_home_chu_quan"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Trang chủ"/>
+    <item android:id="@+id/nav_food_chu_quan"
+        android:icon="@drawable/ic_baseline_fastfood_24"
+        android:title="Món ăn"/>
+    <item android:id="@+id/nav_restaurant_chu_quan"
+        android:icon="@drawable/ic_baseline_restaurant_menu_24"
+        android:title="Thông tin"/>
+
+</menu>

@@ -1,21 +1,23 @@
 package com.example.googleapi.ChuQuan;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.example.googleapi.Adapter.QuanAnAdapter;
 import com.example.googleapi.BottomSheetListView;
@@ -50,11 +52,14 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivityChuQuan extends FragmentActivity implements OnMapReadyCallback {
+public class HomeFegmentChuQuan extends Fragment implements OnMapReadyCallback {
 
+    private static final int RESULT_OK = -1;
     DatabaseHelper myDB;
 
     DrawerLayout drawerLayout;
@@ -78,30 +83,34 @@ public class MainActivityChuQuan extends FragmentActivity implements OnMapReadyC
 
     private final float DEFAULT_ZOOM = 18;
 
+    @Nullable
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.home_chuquan,container,false);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_chuquan);
-
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         //ánh xạ
-        AnhXa();
+        AnhXa(view);
         //
 
-        myDB = new DatabaseHelper(this);
+        myDB = new DatabaseHelper(getContext());
         //Tạo những thứ liên quan tới google map API
         markerList = new ArrayList<>();
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MainActivityChuQuan.this);
-        Places.initialize(MainActivityChuQuan.this,
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        Places.initialize(getActivity(),
                 "AIzaSyCPWiPQolEIjmkoR5iw33tAxXCOWRkWqT0");
-        placesClient = Places.createClient(this);
+        placesClient = Places.createClient(getActivity());
         AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
         mapview = supportMapFragment.getView();
         supportMapFragment.getMapAsync(this);
 
         //Navigation drawer
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawerLayout
                 , R.string.navigation_drawer_open
                 , R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -109,31 +118,30 @@ public class MainActivityChuQuan extends FragmentActivity implements OnMapReadyC
 
     }
 
-    public void AnhXa() {
-        materialSearchBar = findViewById(R.id.searchBar);
-        btnFind = findViewById(R.id.btn_find);
-        supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.mapAPI);
-        drawerLayout = findViewById(R.id.drawer_layout);
+    public void AnhXa(View view) {
+        materialSearchBar = view.findViewById(R.id.searchBar_chuquan);
+        btnFind = view.findViewById(R.id.btn_find_chuquan);
+        supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapAPI_chuquan);
+        drawerLayout = view.findViewById(R.id.drawer_layout_chuquan);
 
     }
 
     public void ThemVaoDachSachQuanAn(Cursor res) {
-        dialog = new BottomSheetDialog(this, R.style.SheetDialog);
+        dialog = new BottomSheetDialog(getContext(), R.style.SheetDialog);
         dialog.setContentView(R.layout.restaurant_bottom_sheet_layout);
         listViewQuanAn = (BottomSheetListView) dialog.findViewById(R.id.listViewBtmSheet);
         quanAnArrayList = new ArrayList<>();
 
 
 
-        adapter = new QuanAnAdapter(this, R.layout.dong_quanan, quanAnArrayList);
+        adapter = new QuanAnAdapter(getContext(), R.layout.dong_quanan, quanAnArrayList);
         listViewQuanAn.setAdapter(adapter);
     }
 
     public void ListQuanAnItemClick() {
         listViewQuanAn.setOnItemClickListener((parent, view, position, id) -> {
             //Mở activity xem món ăn của quán
-            Intent intent = new Intent(MainActivityChuQuan.this, ListMonAn.class);
+            Intent intent = new Intent(getContext(), ListMonAn.class);
             Bundle b = new Bundle();
             QuanAn quanAn = quanAnArrayList.get(position);
             b.putString("IDQuanAn", quanAnArrayList.get(position).ID);
@@ -178,21 +186,21 @@ public class MainActivityChuQuan extends FragmentActivity implements OnMapReadyC
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
-        SettingsClient settingsClient = LocationServices.getSettingsClient(MainActivityChuQuan.this);
+        SettingsClient settingsClient = LocationServices.getSettingsClient(getActivity());
         Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(builder.build());
-        task.addOnSuccessListener(MainActivityChuQuan.this, new OnSuccessListener<LocationSettingsResponse>() {
+        task.addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 getDeviceLocation();
             }
         });
-        task.addOnFailureListener(MainActivityChuQuan.this, new OnFailureListener() {
+        task.addOnFailureListener(getActivity(), new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 if (e instanceof ResolvableApiException) {
                     ResolvableApiException resolvableApiException = (ResolvableApiException) e;
                     try {
-                        resolvableApiException.startResolutionForResult(MainActivityChuQuan.this, 51);
+                        resolvableApiException.startResolutionForResult(getActivity(), 51);
                     } catch (IntentSender.SendIntentException sendIntentException) {
                         sendIntentException.printStackTrace();
                     }
@@ -204,7 +212,7 @@ public class MainActivityChuQuan extends FragmentActivity implements OnMapReadyC
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 51) {
             if (resultCode == RESULT_OK) {
@@ -251,12 +259,11 @@ public class MainActivityChuQuan extends FragmentActivity implements OnMapReadyC
 
                     }
                 } else {
-                    Toast.makeText(MainActivityChuQuan.this, "unable to get location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "unable to get location", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
     }
-
 
 }
