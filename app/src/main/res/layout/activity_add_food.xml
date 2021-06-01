@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChuQuan.AddFoodActivity"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etxtTenMon_addfood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Tên món ăn (Bắt buộc)" />
+
+    <EditText
+        android:id="@+id/etxtMoTa_addfood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Mô tả món ăn (Bắt buộc)" />
+
+    <EditText
+        android:id="@+id/etxtGia_addfood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="Giá (Bắt buộc)"/>
+
+<!--    để up hình lên-->
+    <ImageButton
+        android:id="@+id/uploadFoodImg_addfood"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/rounded_corners_light_gray"/>
+    <Button
+        android:id="@+id/btnAddFood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Thêm món ăn"
+        android:enabled="false"/>
+
+</LinearLayout>
