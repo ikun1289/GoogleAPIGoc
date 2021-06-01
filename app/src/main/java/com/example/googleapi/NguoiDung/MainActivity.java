@@ -143,7 +143,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //            markerList.clear();
 //            mapAPI.clear();
 //            if (quanAnArrayList.size() == 0) {
-//                Toast.makeText(MainActivity.this, "NO DATA", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HomeActivity.this, "NO DATA", Toast.LENGTH_SHORT).show();
 //            } else {
 //                for (int i = 0; i < quanAnArrayList.size(); i++) {
 //                    QuanAn quanAn = quanAnArrayList.get(i);
