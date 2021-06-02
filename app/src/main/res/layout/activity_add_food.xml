@@ -34,15 +34,21 @@
 
 <!--    để up hình lên-->
     <ImageButton
+        android:scaleType="fitCenter"
         android:id="@+id/uploadFoodImg_addfood"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:src="@drawable/rounded_corners_light_gray"/>
+
+    <ProgressBar
+        android:id="@+id/progess_addfood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
     <Button
         android:id="@+id/btnAddFood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="Thêm món ăn"
         android:enabled="false"/>
 

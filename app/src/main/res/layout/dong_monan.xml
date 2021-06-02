@@ -33,13 +33,13 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/txtMoTaMonAn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:text="mô tả"
-            android:textStyle="italic" />
+<!--        <TextView-->
+<!--            android:id="@+id/txtMoTaMonAn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="9dp"-->
+<!--            android:text="mô tả"-->
+<!--            android:textStyle="italic" />-->
 
         <TextView
             android:id="@+id/txtGia"
