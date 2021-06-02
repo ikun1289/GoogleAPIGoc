@@ -8,19 +8,24 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.googleapi.NguoiDung.MainActivity;
 import com.example.googleapi.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -39,11 +44,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.Arrays;
+
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 1000;
-    private Button button;
+    ProgressDialog progressDialog;
+    private Button f,g;
     private static final String TAGF = "FacebookLogin";
     private CallbackManager mCallbackManager;
     TabLayout tabLayout;
@@ -52,7 +60,7 @@ public class HomeActivity extends AppCompatActivity {
     Fragment fragment;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-    LoginButton loginButton;
+
 
 
 
@@ -71,8 +79,8 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_page);
         getSupportActionBar().hide();
-        button =  (Button) findViewById(R.id.button2);
-        loginButton = (LoginButton) findViewById(R.id.login_button_facebook);
+        g =  (Button) findViewById(R.id.login_button_google);
+        f = (Button) findViewById(R.id.login_button_facebook);
 //        floatingActionButton = findViewById(R.id.login_google);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         LoginAdapter loginAdapter = new LoginAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -89,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
         createRequest();
         // [END initialize_auth]
 
-        button.setOnClickListener(new View.OnClickListener() {
+        g.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signInG();
@@ -168,10 +176,12 @@ signInF();
 
     private void signInF(){
         // [START config_signin] Configure Google Sign In
-
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
         mCallbackManager = CallbackManager.Factory.create();
-        loginButton.setReadPermissions("email", "public_profile");
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+
+       // loginButton.setReadPermissions("email", "public_profile");
+
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
@@ -186,6 +196,12 @@ signInF();
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
+            }
+        });
+        f.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager.getInstance().logInWithReadPermissions(HomeActivity.this, Arrays.asList("email", "public_profile"));
             }
         });
 
@@ -274,6 +290,25 @@ signInF();
     private void updateUI(FirebaseUser user) {
         if(user!=null) {
             Intent intent = new Intent(getApplicationContext(), tt.class);
+            progressDialog = new ProgressDialog(HomeActivity.this);
+            progressDialog.show();
+            progressDialog.setContentView(R.layout.activity_loading);
+            progressDialog.getWindow().setBackgroundDrawableResource(
+                    android.R.color.transparent
+            );
+
+            new CountDownTimer(2000,500){
+
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    progressDialog.cancel();
+                }
+            }.start();
             startActivity(intent);
         }
 
