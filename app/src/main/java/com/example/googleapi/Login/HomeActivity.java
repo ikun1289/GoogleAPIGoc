@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.googleapi.Models.User;
 import com.example.googleapi.NguoiDung.MainActivity;
 import com.example.googleapi.R;
 import com.facebook.AccessToken;
@@ -34,6 +35,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -43,8 +45,18 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -60,6 +72,7 @@ public class HomeActivity extends AppCompatActivity {
     Fragment fragment;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+   DocumentReference db = FirebaseFirestore.getInstance().document("/Data/User");
 
 
 
@@ -88,8 +101,24 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         // Write a message to the database
+        db.collection("user").add(new User("12","!","1"));
+
+        db.collection("user")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " +document.getData());
 
 
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
 //        // [START initialize_auth]
 
         // Initialize Firebase Auth
