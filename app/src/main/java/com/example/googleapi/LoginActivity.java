@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.googleapi.ChuQuan.MainActivityChuQuan;
 import com.example.googleapi.ChuQuan.MainChuQuan;
 import com.example.googleapi.Firebase.FirebaseHelper;
 import com.example.googleapi.Models.QuanAn;

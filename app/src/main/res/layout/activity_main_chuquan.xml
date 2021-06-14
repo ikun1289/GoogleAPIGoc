@@ -13,13 +13,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <FrameLayout
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/fragment_container_chuquan"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/bottom_nav_chuquan">
 
-        </FrameLayout>
+        </androidx.viewpager.widget.ViewPager>
 
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.googleapi">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -28,6 +27,8 @@
         </intent-filter>
         </activity>
 
+        <activity android:name=".ChuQuan.AddFoodActivity"></activity>
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -42,13 +43,13 @@
 
         <activity android:name=".LoginActivity" />
         <activity android:name=".NguoiDung.ListMonAn" />
-        <activity android:name=".ChuQuan.MainActivityChuQuan" />
         <activity android:name=".NguoiDung.MainActivity" />
-        <activity android:name=".ChuQuan.MainChuQuan"/>
         <activity android:name=".Login.Demo"/>
         <activity android:name=".Login.HomeActivity"/>
         <activity android:name=".Login.tt"/>
 <activity android:name=".PermissionActivity"/>
+        <activity android:name=".ChuQuan.MainChuQuan" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

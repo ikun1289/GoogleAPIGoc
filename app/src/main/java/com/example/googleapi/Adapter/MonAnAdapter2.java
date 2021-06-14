@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.googleapi.Models.MonAn;
 import com.example.googleapi.R;
 
@@ -22,12 +23,14 @@ public class MonAnAdapter2 extends RecyclerView.Adapter<MonAnAdapter2.ViewHolder
     private List<MonAn> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private Context context;
 
     // data is passed into the constructor
     public MonAnAdapter2(Context context, List<MonAn> data, ItemClickListener mItemClickListener) {
         this.mInflater = LayoutInflater.from(context);
         this.mClickListener = mItemClickListener;
         this.mData = data;
+        this.context = context;
     }
 
     public void setData(List<MonAn> data){
@@ -52,7 +55,8 @@ public class MonAnAdapter2 extends RecyclerView.Adapter<MonAnAdapter2.ViewHolder
 
         holder.txtTenMonAn.setText(monAn.TenMonAn);
         holder.txtGia.setText(monAn.Gia+" đồng");
-        holder.txtMoTaMonAn.setText(monAn.MoTa);
+        //holder.txtMoTaMonAn.setText(monAn.MoTa);
+        Glide.with(context).load(monAn.ImgMonAn).into(holder.imgMonAn);
 
     }
 
@@ -66,7 +70,7 @@ public class MonAnAdapter2 extends RecyclerView.Adapter<MonAnAdapter2.ViewHolder
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView txtTenMonAn;
-        private final TextView txtMoTaMonAn;
+        //private final TextView txtMoTaMonAn;
         private final TextView txtGia;
         private final ImageView imgMonAn;
         private final ItemClickListener itemClickListener;
@@ -77,7 +81,7 @@ public class MonAnAdapter2 extends RecyclerView.Adapter<MonAnAdapter2.ViewHolder
 
             itemView.setOnClickListener(this);
             txtTenMonAn = itemView.findViewById(R.id.txtTenMonAn);
-            txtMoTaMonAn = itemView.findViewById(R.id.txtMoTaMonAn);
+            //txtMoTaMonAn = itemView.findViewById(R.id.txtMoTaMonAn);
             txtGia = itemView.findViewById(R.id.txtGia);
             imgMonAn = itemView.findViewById(R.id.imvMonAn);
             this.itemClickListener = itemClickListener;

@@ -49,14 +49,14 @@ public class MonAnAdapter extends BaseAdapter {
         convertView = inflater.inflate(layout,null);
 
         TextView txtTenMonAn = convertView.findViewById(R.id.txtTenMonAn);
-        TextView txtMoTaMonAn = convertView.findViewById(R.id.txtMoTaMonAn);
+        //TextView txtMoTaMonAn = convertView.findViewById(R.id.txtMoTaMonAn);
         TextView txtGia = convertView.findViewById(R.id.txtGia);
         ImageView imgMonAn = convertView.findViewById(R.id.imvMonAn);
 
         //gán
         MonAn monAn = monAnList.get(position);
         txtTenMonAn.setText(monAn.TenMonAn);
-        txtMoTaMonAn.setText(monAn.MoTa);
+        //txtMoTaMonAn.setText(monAn.MoTa);
         txtGia.setText(monAn.Gia+" đồng");
 
 
