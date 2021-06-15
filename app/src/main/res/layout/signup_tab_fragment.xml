@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F2F2F2"
@@ -24,11 +25,12 @@
     app:layout_constraintWidth_percent="0.8"/>
 
     <EditText
-        android:id="@+id/xd_password"
+
+        android:id="@+id/spassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/n_bg"
-        android:hint="Confirm Password"
+        android:hint="Password"
         android:inputType="textPassword"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
@@ -39,15 +41,15 @@
         app:layout_constraintHorizontal_bias="0.402"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintVertical_bias="0.296"
         app:layout_constraintWidth_percent="0.8" />
 
     <EditText
-        android:id="@+id/spassword"
+        android:id="@+id/xd_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/n_bg"
-        android:hint="Password"
+        android:hint="Confirm Password"
         android:inputType="textPassword"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
@@ -81,4 +83,31 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.8"
         app:layout_constraintWidth_percent="0.8" />
+
+    <RadioGroup
+        android:id="@+id/vaitro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/s_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/xd_password">
+
+        <RadioButton
+            android:id="@+id/radioButtonNguoiDung"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:checked="true"
+            android:onClick="onRadioButtonClicked"
+            android:text="Người dùng" />
+
+        <RadioButton
+            android:id="@+id/radioButtonChuQuan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Chủ quán" />
+    </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,7 +27,7 @@
         </intent-filter>
         </activity>
 
-        <activity android:name=".ChuQuan.AddFoodActivity"></activity>
+        <activity android:name=".ChuQuan.AddFoodActivity" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -39,7 +39,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/map_key" />
 
         <activity android:name=".LoginActivity" />
         <activity android:name=".NguoiDung.ListMonAn" />
@@ -58,11 +58,13 @@
         <activity android:name=".Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".Login.CreateQuanAnActivity"/>
+        <activity android:name=".Login.PickPlaceDialog"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
     </application>
 
 </manifest>

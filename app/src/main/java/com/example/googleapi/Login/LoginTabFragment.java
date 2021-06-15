@@ -12,7 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.googleapi.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import org.jetbrains.annotations.NotNull;
 
 public class LoginTabFragment extends Fragment {
     EditText email,pass;
@@ -30,7 +36,57 @@ public LoginTabFragment(){};
         login = view.findViewById(R.id.login_button);
         mainActivity = (HomeActivity) getActivity();
 
+        login.setOnClickListener(v -> {
+            Login(email.getText().toString(), pass.getText().toString());
+        });
+
         return view;
+    }
+
+    private void Login(String email, String pass) {
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        if(checkValidate(email,pass))
+        {
+            mAuth.signInWithEmailAndPassword(email,pass)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                    mainActivity.updateUI(FirebaseAuth.getInstance().getCurrentUser());
+                }
+            });
+        }
+    }
+
+    private boolean checkValidate(String emailS, String passS) {
+
+        if(emailS.isEmpty())
+        {
+            email.setError("Không được để trống!");
+            return false;
+        }
+        else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(emailS).matches())
+        {
+            email.setError("Email không hợp lệ");
+            return false;
+        }
+        else if(passS.isEmpty())
+        {
+            pass.setError("Không được để trống");
+            return false;
+        }
+        else if(passS.contains(" "))
+        {
+            pass.setError("Password chứa ký tự không hợp lệ!");
+            return false;
+        }
+        else if(passS.length()<6)
+        {
+            pass.setError("Password ít nhất phải 6 ký tự");
+            return false;
+        }
+
+        return true;
     }
 
 

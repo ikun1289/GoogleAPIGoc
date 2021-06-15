@@ -89,7 +89,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-    private final float DEFAULT_ZOOM = 18;
+    private final float DEFAULT_ZOOM = 20;
 
 
     @Override
@@ -116,9 +116,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //Tạo những thứ liên quan tới google map API
         markerList = new ArrayList<>();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
-        Places.initialize(MainActivity.this,
-                "AIzaSyCPWiPQolEIjmkoR5iw33tAxXCOWRkWqT0");
-        placesClient = Places.createClient(this);
+//        Places.initialize(MainActivity.this,
+//                "AIzaSyCPWiPQolEIjmkoR5iw33tAxXCOWRkWqT0");
+//        placesClient = Places.createClient(this);
         AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
         mapview = supportMapFragment.getView();

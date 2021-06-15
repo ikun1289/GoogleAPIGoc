@@ -39,5 +39,11 @@
             android:title="Contact Us" />
     </group>
 
+    <group android:id="@+id/g7">
+        <item
+            android:id="@+id/nav_DX"
+            android:title="Đăng xuất" />
+    </group>
+
 
 </menu>

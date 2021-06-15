@@ -9,10 +9,11 @@ public class QuanAn implements Serializable {
     public String GioDongCua;
     public String MoTa;
     public String Lat,Lng;
+    public String imgQuanAn;
 
     public QuanAn(){}
 
-    public QuanAn(String IDQuanAn,String tenQuan, String gioMoCua, String gioDongCua, String moTa, String lat, String lng) {
+    public QuanAn(String IDQuanAn,String tenQuan, String gioMoCua, String gioDongCua, String moTa, String lat, String lng, String imgQuanAn) {
         this.ID = IDQuanAn;
         TenQuan = tenQuan;
         GioMoCua = gioMoCua;

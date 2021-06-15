@@ -6,10 +6,10 @@ plugins {
 android {
     signingConfigs {
         release {
-        storeFile file('/New folder/app/debug.keystore')
+        storeFile file('/Users/Asus/.android/debug.keystore')
             storePassword 'android'
             keyAlias 'androiddebugkey'
-            keyPassword
+            keyPassword 'android'
         }
     }
     compileSdkVersion 30

@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,10 +19,12 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SignupTabFragment  extends Fragment {
     EditText email,pass,cpass;
+    RadioGroup Vaitro;
     Button signup;
     private FirebaseAuth mAuth;
     private static String TAG ="SIGNUP";
     HomeActivity mainActivity;
+    String role = "nguoidung";
     public  SignupTabFragment(){};
 
     @Nullable
@@ -31,6 +35,7 @@ public class SignupTabFragment  extends Fragment {
         pass = view.findViewById(R.id.spassword);
         cpass = view.findViewById(R.id.xd_password);
         signup = view.findViewById(R.id.s_button);
+        Vaitro = view.findViewById(R.id.vaitro);
         mainActivity = (HomeActivity) getActivity();
         mAuth = FirebaseAuth.getInstance();
         signup.setOnClickListener(new View.OnClickListener() {
@@ -40,15 +45,67 @@ public class SignupTabFragment  extends Fragment {
                 String npass = pass.getText().toString();
                 String ncpass = cpass.getText().toString();
 
-                if(npass.equals(ncpass)) {
-                    mainActivity.createAccount(nemail, npass);
+
+                if(checkValidate(nemail,npass,ncpass))
+                {
+                    mainActivity.createAccount(nemail, npass, role);
                     Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
                 }
                 else
                     Toast.makeText(getActivity(), "no", Toast.LENGTH_SHORT).show();
             }
         });
+
+        Vaitro.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(view.getId()) {
+                    case R.id.radioButtonNguoiDung:
+                        role = "nguoidung";
+                        break;
+                    case R.id.radioButtonChuQuan:
+                        role = "chuquan";
+                        break;
+                    default: role = "nguoidung"; break;
+                }
+            }
+        });
+
         return view;
+    }
+
+    private boolean checkValidate(String emailS, String passS, String ncpass) {
+
+        if(passS.equals(ncpass)) {
+            cpass.setError("Không giống với password");
+            return false;
+        }
+        else if(emailS.isEmpty())
+        {
+            email.setError("Không được để trống!");
+            return false;
+        }
+        else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(emailS).matches())
+        {
+            email.setError("Email không hợp lệ");
+            return false;
+        }
+        else if(passS.isEmpty())
+        {
+            pass.setError("Không được để trống");
+            return false;
+        }
+        else if(passS.contains(" "))
+        {
+            pass.setError("Password chứa ký tự không hợp lệ!");
+            return false;
+        }
+        else if(passS.length()<6)
+        {
+            pass.setError("Password ít nhất phải 6 ký tự");
+            return false;
+        }
+        return true;
     }
 
 }
