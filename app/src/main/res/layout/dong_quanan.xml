@@ -1,32 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/quananImg"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:src="@drawable/foodimg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="8dp"
+        android:background="@drawable/n_bg"/>
 
     <TextView
         android:id="@+id/txtTenQuan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="24sp"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/txtGioHoatDong"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/txtTenQuan"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="1dp"
-        android:text="TextView" />
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:text="Tên quán"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        app:layout_constraintStart_toEndOf="@+id/quananImg"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtMoTa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtTenQuan"
-        android:layout_marginTop="0dp"
-        android:text="TextView"
-        android:textStyle="italic"/>
-</RelativeLayout>
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:text="mô tả"
+        android:textSize="20dp"
+        app:layout_constraintStart_toEndOf="@+id/quananImg"
+        app:layout_constraintTop_toBottomOf="@+id/txtTenQuan" />
+
+    <TextView
+        android:id="@+id/txtGioHoatDong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:text="00:00-00:00"
+        android:textSize="26dp"
+        app:layout_constraintStart_toEndOf="@+id/quananImg"
+        app:layout_constraintTop_toBottomOf="@+id/txtMoTa" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

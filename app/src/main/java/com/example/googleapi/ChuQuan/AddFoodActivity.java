@@ -81,6 +81,7 @@ public class AddFoodActivity extends AppCompatActivity {
             monAnToAdd.TenMonAn = editTextTenMon.getText().toString();
             monAnToAdd.MoTa = editTextMoTa.getText().toString();
             monAnToAdd.Gia = editTextGia.getText().toString();
+            btnAddFood.setEnabled(false);
 
             StorageReference fileRef = storageReference.child(System.currentTimeMillis()
                     +"."+getFileExtension(imgUri));

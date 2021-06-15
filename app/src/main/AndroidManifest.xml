@@ -65,6 +65,7 @@
         <activity android:name=".Login.CreateQuanAnActivity"/>
         <activity android:name=".Login.PickPlaceDialog"
             android:theme="@style/Theme.AppCompat.Dialog"/>
+        <activity android:name=".NguoiDung.FavoriteActivity"/>
     </application>
 
 </manifest>

@@ -3,8 +3,11 @@ package com.example.googleapi.NguoiDung;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,12 +22,17 @@ import android.widget.Toast;
 
 import com.example.googleapi.Adapter.MonAnAdapter;
 import com.example.googleapi.Adapter.MonAnAdapter2;
+import com.example.googleapi.Adapter.ViewPagerAdapter;
+import com.example.googleapi.ChuQuan.FoodListFragmentChuQuan;
+import com.example.googleapi.ChuQuan.HomeFegmentChuQuan;
+import com.example.googleapi.ChuQuan.RestauDetailFragmentChuQuan;
 import com.example.googleapi.DatabaseHelper;
 import com.example.googleapi.Models.MonAn;
 import com.example.googleapi.Models.QuanAn;
 import com.example.googleapi.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -40,17 +48,16 @@ import java.util.List;
 import java.util.Map;
 
 public class ListMonAn extends AppCompatActivity {
-    RecyclerView lvMonAn;
-    MonAnAdapter adapter;
-    MonAnAdapter2 adapter2;
-    String IDQuanAn = "";
+
+    ViewPagerAdapter adapter;
+    public static String IDQuanAn = "";
     QuanAn quanAn;
-    List<MonAn> monAnList;
+
     DatabaseHelper myDB;
     TextView txtTenQuan, txtMoTa, txtGioHoatDong, txtLatlng;
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    DocumentReference quanAnRef;
     ImageButton btnback, btnFav;
+    TabLayout tabLayout;
+    ViewPager viewPager;
     boolean fav = false;
 
     @Override
@@ -78,16 +85,21 @@ public class ListMonAn extends AppCompatActivity {
 //        setTitle("Chi Tiết Quán Ăn");
 
 
-        monAnList = new ArrayList<>();
-        myDB = new DatabaseHelper(this);
-        quanAnRef = firebaseFirestore.collection("QuanAn").document(IDQuanAn);
+//        monAnList = new ArrayList<>();
+//        myDB = new DatabaseHelper(this);
+//        quanAnRef = firebaseFirestore.collection("QuanAn").document(IDQuanAn);
 
         //adapter = new MonAnAdapter(this, R.layout.dong_monan, monAnList);
-        adapter2 = new MonAnAdapter2(this,monAnList,this::onItemClick);
-        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);;
-        lvMonAn.setLayoutManager(gridLayoutManager);
-        lvMonAn.setAdapter(adapter2);
-        LayDanhSachMonAn();
+//        adapter2 = new MonAnAdapter2(this,monAnList,this::onItemClick);
+//        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);;
+//        lvMonAn.setLayoutManager(gridLayoutManager);
+//        lvMonAn.setAdapter(adapter2);
+//        LayDanhSachMonAn();
+
+
+        //set up viewpager
+        setUpViewPager();
+
 
         //Đưa thông tin quán ăn lên view
         txtTenQuan.setText(quanAn.TenQuan);
@@ -95,6 +107,20 @@ public class ListMonAn extends AppCompatActivity {
         txtGioHoatDong.setText("Giờ mở cửa : " + quanAn.GioMoCua + "-" + quanAn.GioDongCua);
         txtLatlng.setText(quanAn.Lat + " - " + quanAn.Lng);
 
+    }
+
+    private void setUpViewPager(){
+        List<Fragment> fragments;
+        fragments = new ArrayList<>();
+        fragments.add(new ThucDonFragment());
+        fragments.add(new BinhLuanFragment());
+
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,fragments);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setText("Thực đơn");
+        tabLayout.getTabAt(1).setText("Bình luận");
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
 
     private void checkFav() {
@@ -115,7 +141,6 @@ public class ListMonAn extends AppCompatActivity {
                     }
                     else fav = false;
                 }
-
             }
         });
     }
@@ -178,7 +203,7 @@ public class ListMonAn extends AppCompatActivity {
     }
 
     private void AnhXa() {
-        lvMonAn = (RecyclerView) findViewById(R.id.gridviewMonAn);
+        //lvMonAn = (RecyclerView) findViewById(R.id.gridviewMonAn);
         txtTenQuan = findViewById(R.id.txtTenQuan);
         txtMoTa = findViewById(R.id.txtMoTa);
         txtGioHoatDong = findViewById(R.id.txtGioHoatDong);
@@ -190,27 +215,12 @@ public class ListMonAn extends AppCompatActivity {
         }
         btnback = findViewById(R.id.btnBack);
         btnFav = findViewById(R.id.btnFav);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.listmonan_viewpager);
 
     }
 
-    private void LayDanhSachMonAn() {
-        quanAnRef.collection("MonAn").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful())
-                {
-                    for(QueryDocumentSnapshot documentSnapshot: task.getResult())
-                    {
-                        MonAn monAn = documentSnapshot.toObject(MonAn.class);
-                        monAn.IDMonAn = documentSnapshot.getId();
-                        monAnList.add(monAn);
-                        Log.i("Firebase","MonAn "+monAn.IDMonAn);
-                    }
-                    adapter2.notifyDataSetChanged();
-                }
-            }
-        });
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -223,15 +233,15 @@ public class ListMonAn extends AppCompatActivity {
     }
 
 
-    public void onItemClick(int position) {
-//        Intent intent = new Intent(view.getContext(), DetailActivity.class);
-//        intent.putExtra("detail-back", 1);
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("item", listRecipes.get(position));
-//        intent.putExtras(bundle);
-//        startActivity(intent);
-
-        Toast.makeText(getApplicationContext(),position+"",Toast.LENGTH_SHORT).show();
-    }
+//    public void onItemClick(int position) {
+////        Intent intent = new Intent(view.getContext(), DetailActivity.class);
+////        intent.putExtra("detail-back", 1);
+////        Bundle bundle = new Bundle();
+////        bundle.putSerializable("item", listRecipes.get(position));
+////        intent.putExtras(bundle);
+////        startActivity(intent);
+//
+//        Toast.makeText(getApplicationContext(),monAnList.get(position).MoTa,Toast.LENGTH_SHORT).show();
+//    }
 
 }

@@ -9,24 +9,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white2"
-        android:elevation="8dp">
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="8dp">
 
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
             android:backgroundTint="@color/fui_transparent"
-            android:src="@drawable/ic_arrow_left"
-            android:layout_marginTop="4dp"/>
+            android:src="@drawable/ic_arrow_left" />
 
         <ImageButton
             android:id="@+id/btnFav"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="4dp"
             android:backgroundTint="@color/fui_transparent"
             android:src="@drawable/ic_baseline_un_fav_24" />
 
@@ -35,37 +32,31 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
+        android:layout_marginHorizontal="8dp"
         >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white2"
-                android:elevation="8dp">
+                >
 
                 <ImageView
                     android:id="@+id/quananImg"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:layout_marginLeft="8dp"
                     android:background="@drawable/n_bg"
-                    android:src="@drawable/girl"
-                    android:layout_marginTop="8dp"/>
+                    android:src="@drawable/girl" />
 
                 <TextView
                     android:id="@+id/txtTenQuan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_toEndOf="@+id/quananImg"
                     android:layout_toRightOf="@+id/quananImg"
                     android:text="Tên quán"
@@ -153,46 +144,24 @@
 
             </RelativeLayout>
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:text="Thực đơn"
+                android:textColor="@color/green_500"
+                android:textSize="20dp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/gridviewMonAn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/logo_bg2"
-                android:backgroundTint="@color/white2"
-                app:tabGravity="start"
-                app:tabIconTint="#fa4a0c"
-                app:tabIndicatorAnimationDuration="300"
-                app:tabIndicatorColor="#fa4a0c"
-                app:tabIndicatorFullWidth="false"
-
-                app:tabIndicatorGravity="bottom"
-                app:tabInlineLabel="true"
-                app:tabPaddingEnd="0dp"
-                app:tabPaddingStart="0dp"
-                app:tabTextAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:tabTextColor="@color/black"
-
-                android:elevation="8dp"/>
-
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/gridviewMonAn"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:horizontalSpacing="8dp"-->
-<!--                android:numColumns="2"-->
-<!--                android:stretchMode="columnWidth"-->
-<!--                android:verticalSpacing="8dp"-->
-<!--                android:layout_marginHorizontal="8dp"-->
-<!--                android:layout_marginTop="8dp"/>-->
-
-            <com.example.googleapi.CustomViewpager
-                android:id="@+id/listmonan_viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginHorizontal="8dp"
-                />
+                android:layout_weight="1"
+                android:horizontalSpacing="8dp"
+                android:numColumns="2"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="8dp" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
