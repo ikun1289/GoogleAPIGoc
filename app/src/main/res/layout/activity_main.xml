@@ -53,16 +53,20 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_margin="16dp"
-            android:background="@color/green_500"
+            android:background="@drawable/btn"
+            android:backgroundTint="@color/green_500"
+            android:layout_marginHorizontal="16dp"
             android:text="Find all nearby restaurants"
             android:textColor="@color/green_100" />
 
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/white"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu"/>
 

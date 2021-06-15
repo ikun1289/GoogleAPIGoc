@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginVertical="8dp">
 
         <ImageButton
             android:id="@+id/btnBack"
@@ -32,17 +32,17 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="8dp"
         >
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:layout_margin="8dp">
 
                 <ImageView
                     android:id="@+id/quananImg"
@@ -163,8 +163,10 @@
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="8dp" />
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
+
+
+
 
 
 

@@ -15,6 +15,7 @@ import android.database.CursorWindow;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.example.googleapi.Adapter.QuanAnAdapter;
 import com.example.googleapi.BottomSheetListView;
 import com.example.googleapi.DatabaseHelper;
+import com.example.googleapi.Login.HomeActivity;
 import com.example.googleapi.Models.QuanAn;
 import com.example.googleapi.R;
 import com.example.googleapi.StringSimilarity;
@@ -51,6 +53,8 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -81,6 +85,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     Button btnFind;
 
     BottomSheetListView listViewQuanAn;
+    NavigationView navigationView;
     BottomSheetDialog dialog;
     ArrayList<QuanAn> quanAnArrayList;
     ArrayList<QuanAn> quanAnSearchList;
@@ -101,15 +106,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         AnhXa();
         //
 
-        try {
-            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
-            field.setAccessible(true);
-            field.set(null, 100 * 1024 * 1024); //the 100MB is the new size
-        } catch (Exception e) {
-            if (e!=null) {
-                e.printStackTrace();
-            }
-        }
+//        try {
+//            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+//            field.setAccessible(true);
+//            field.set(null, 100 * 1024 * 1024); //the 100MB is the new size
+//        } catch (Exception e) {
+//            if (e!=null) {
+//                e.printStackTrace();
+//            }
+//        }
+
+
 
         quanAnSearchList = new ArrayList<>();
         myDB = new DatabaseHelper(this);
@@ -130,8 +137,23 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 , R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.nav_yeuthich:drawerLayout.closeDrawers();break;
+                    case R.id.nav_about:drawerLayout.closeDrawers();break;
+                    case R.id.nav_Contact:drawerLayout.closeDrawers();break;
+                    case R.id.nav_DX: signOut(); drawerLayout.closeDrawers();break;
+                    default:drawerLayout.closeDrawers();break;
+                }
+                return true;
+            }
+        });
+        //
 
-        //Hiện danh sách quán ăn bằng dialog bottomsheet
+        //Lấy danh sách quán ăn vào dialog bottomsheet
         ThemVaoDachSachQuanAn();
 
         //listener của btn tìm quán ăn gần nhất
@@ -249,6 +271,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //        });
     }
 
+    private void signOut() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
+
     private void Search(String toString) {
         Toast.makeText(getApplicationContext(),"Search",Toast.LENGTH_SHORT).show();
         quanAnSearchList = new ArrayList<>();
@@ -271,6 +299,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapAPI);
         drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.navView);
 
     }
 
@@ -334,6 +363,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         mapAPI.setMyLocationEnabled(true);
         mapAPI.getUiSettings().setMyLocationButtonEnabled(true);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
 
         if (mapview != null && mapview.findViewById(Integer.parseInt("1")) != null) {
             View locationButton = ((View) mapview.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
@@ -341,6 +371,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.setMargins(0, 0, 40, 180);
+
+            @SuppressLint("ResourceType") View zoom = (View) mapview.findViewById(0x1);
+            RelativeLayout.LayoutParams layoutParams1 = (RelativeLayout.LayoutParams) zoom.getLayoutParams();
+            layoutParams1.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+            layoutParams1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+            layoutParams1.setMargins(0, 180, 40, 0);
+
 
         }
 

@@ -20,5 +20,6 @@ public class RestauDetailFragmentChuQuan extends Fragment {
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.restaurant_detail_chuquan,container,false);
+
     }
 }

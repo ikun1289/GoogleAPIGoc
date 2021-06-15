@@ -21,12 +21,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_google_maps"
-            android:translationY="-18dp"/>
         <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/searchBar_chuquan"
             style="@style/MaterialSearchBarLight"
@@ -52,8 +46,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"
-            android:background="@color/green_500"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="19dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/btn"
+            android:backgroundTint="@color/green_500"
             android:text="Tìm các quán ăn gần đây"
             android:textColor="@color/green_100" />
 

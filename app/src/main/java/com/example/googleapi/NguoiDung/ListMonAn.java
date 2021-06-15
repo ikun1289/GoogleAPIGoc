@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.example.googleapi.Models.QuanAn;
 import com.example.googleapi.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,7 +35,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListMonAn extends AppCompatActivity {
     RecyclerView lvMonAn;
@@ -46,19 +50,34 @@ public class ListMonAn extends AppCompatActivity {
     TextView txtTenQuan, txtMoTa, txtGioHoatDong, txtLatlng;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     DocumentReference quanAnRef;
+    ImageButton btnback, btnFav;
+    boolean fav = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_mon_an);
+        getSupportActionBar().hide();
 
         AnhXa();
 
+        checkFav();
+
+
+        btnback.setOnClickListener(v -> {
+            this.onBackPressed();
+        });
+        btnFav.setOnClickListener(v -> {
+            setFavQuanAn();
+        });
+
         //
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        setTitle("Chi Tiết Quán Ăn");
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null)
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        setTitle("Chi Tiết Quán Ăn");
+
+
         monAnList = new ArrayList<>();
         myDB = new DatabaseHelper(this);
         quanAnRef = firebaseFirestore.collection("QuanAn").document(IDQuanAn);
@@ -78,17 +97,100 @@ public class ListMonAn extends AppCompatActivity {
 
     }
 
+    private void checkFav() {
+        DocumentReference document = FirebaseFirestore.getInstance().collection("Users")
+                                                            .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                            .collection("Fav")
+                                                            .document(IDQuanAn);
+        document.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if(documentSnapshot.exists())
+                    {
+                        btnFav.setImageResource(R.drawable.ic_baseline_favorite_24);
+                        fav = true;
+                    }
+                    else fav = false;
+                }
+
+            }
+        });
+    }
+
+    private void setFavQuanAn() {
+
+        if(!fav)
+        {
+            updateFav(true);
+        }
+        else {
+            updateFav(false);
+        }
+
+
+    }
+
+    private void updateFav(boolean fav1) {
+
+        if(fav1)
+        {
+            DocumentReference document = FirebaseFirestore.getInstance().collection("Users")
+                    .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .collection("Fav")
+                    .document(IDQuanAn);
+            Map<String,String> h = new HashMap<>();
+            h.put("IDQuanAn",IDQuanAn);
+
+            document.set(h).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull @NotNull Task<Void> task) {
+                    if(task.isSuccessful())
+                    {
+                        btnFav.setImageResource(R.drawable.ic_baseline_favorite_24);
+                        fav = true;
+                        Toast.makeText(getApplicationContext(),"Đã thêm vào danh sách yêu thích <3",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+        else {
+            DocumentReference document = FirebaseFirestore.getInstance().collection("Users")
+                    .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .collection("Fav")
+                    .document(IDQuanAn);
+            document.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull @NotNull Task<Void> task) {
+                    if(task.isSuccessful())
+                    {
+                        btnFav.setImageResource(R.drawable.ic_baseline_un_fav_24);
+                        fav = false;
+                        Toast.makeText(getApplicationContext(),"Đã bỏ ra khỏi danh sách yêu thích",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+
+
+    }
+
     private void AnhXa() {
         lvMonAn = (RecyclerView) findViewById(R.id.gridviewMonAn);
-        txtTenQuan = findViewById(R.id.txtTenQuan_listmonan);
-        txtMoTa = findViewById(R.id.txtMoTa_listmonan);
-        txtGioHoatDong = findViewById(R.id.txtGioHoatDong_listmonan);
-        txtLatlng = findViewById(R.id.txtLatlng_listmonan);
+        txtTenQuan = findViewById(R.id.txtTenQuan);
+        txtMoTa = findViewById(R.id.txtMoTa);
+        txtGioHoatDong = findViewById(R.id.txtGioHoatDong);
+        txtLatlng = findViewById(R.id.txtViTri);
         Bundle b = getIntent().getExtras();
         if (b != null) {
             IDQuanAn = b.getString("IDQuanAn");
             quanAn = (QuanAn) b.get("QuanAn");
         }
+        btnback = findViewById(R.id.btnBack);
+        btnFav = findViewById(R.id.btnFav);
+
     }
 
     private void LayDanhSachMonAn() {

@@ -56,7 +56,7 @@ public class MonAnAdapter2 extends RecyclerView.Adapter<MonAnAdapter2.ViewHolder
         holder.txtTenMonAn.setText(monAn.TenMonAn);
         holder.txtGia.setText(monAn.Gia+" đồng");
         //holder.txtMoTaMonAn.setText(monAn.MoTa);
-        Glide.with(context).load(monAn.ImgMonAn).into(holder.imgMonAn);
+        Glide.with(context).load(monAn.ImgMonAn).placeholder(R.drawable.foodimg).into(holder.imgMonAn);
 
     }
 

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.example.googleapi.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -32,7 +34,7 @@ import java.util.List;
 
 public class FoodListFragmentChuQuan extends Fragment {
 
-    private final String IDQuanAn = "FQrgS2LEbfrPbzczyEHP";
+    String IDQuanAn = "FQrgS2LEbfrPbzczyEHP";
     DocumentReference quanAnRef;
 
     FloatingActionButton fabAddButton;
@@ -51,11 +53,18 @@ public class FoodListFragmentChuQuan extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null)
+        {
+            IDQuanAn = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+
         //mapping
         fabAddButton = view.findViewById(R.id.fabAddButton);
         foodView = view.findViewById(R.id.food_list_chuquan_recyclerview);
         quanAnRef = FirebaseFirestore.getInstance().collection("QuanAn").document(IDQuanAn);
         //end mapping
+
+
 
         //set adapter
         monAnList = new ArrayList<>();
@@ -64,6 +73,9 @@ public class FoodListFragmentChuQuan extends Fragment {
         foodView.setLayoutManager(gridLayoutManager);
         foodView.setAdapter(adapter);
         LayDanhSachMonAn();
+        //
+
+
 
         fabAddButton.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(),AddFoodActivity.class);
@@ -77,6 +89,17 @@ public class FoodListFragmentChuQuan extends Fragment {
     }
 
     private void LayDanhSachMonAn() {
+
+        monAnList.add(new MonAn("99","99","99","00","99"));
+        monAnList.add(new MonAn("99","99","99","00","99"));
+        monAnList.add(new MonAn("99","99","99","00","99"));
+        monAnList.add(new MonAn("99","99","99","00","99"));
+        monAnList.add(new MonAn("99","99","99","00","99"));
+        monAnList.add(new MonAn("99","99","99","00","99"));
+        monAnList.add(new MonAn("99","99","99","00","99"));
+        monAnList.add(new MonAn("99","99","99","00","99"));
+        monAnList.add(new MonAn("99","99","99","00","99"));
+
         quanAnRef.collection("MonAn").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {

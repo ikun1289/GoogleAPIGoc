@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.googleapi.ChuQuan.MainChuQuan;
 import com.example.googleapi.Models.MonAn;
 import com.example.googleapi.Models.User;
 import com.example.googleapi.NguoiDung.MainActivity;
@@ -338,17 +339,17 @@ public class HomeActivity extends AppCompatActivity {
                     android.R.color.transparent
             );
 
-            new CountDownTimer(2000,500){
-                @Override
-                public void onTick(long millisUntilFinished) {
-
-                }
-
-                @Override
-                public void onFinish() {
-                    progressDialog.cancel();
-                }
-            }.start();
+//            new CountDownTimer(2000,500){
+//                @Override
+//                public void onTick(long millisUntilFinished) {
+//
+//                }
+//
+//                @Override
+//                public void onFinish() {
+//                    progressDialog.cancel();
+//                }
+//            }.start();
 
             FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
             DocumentReference documentReference = firebaseFirestore.collection("Users").document(user.getUid());
@@ -374,24 +375,35 @@ public class HomeActivity extends AppCompatActivity {
                                             if(documentSnapshot.exists())
                                             {
                                                 //tồn tại quán ăn r
+                                                Intent intent = new Intent(getApplicationContext(), MainChuQuan.class);
+                                                progressDialog.dismiss();
                                                 startActivity(intent);
+                                                finish();
                                             }
                                             else
                                             {
                                                 //chưa tồn tại quán ăn
+                                                progressDialog.dismiss();
                                                 showDialogCreateQuanAn();
                                             }
                                         }
                                     }
                                 });
                             }
-                            else startActivity(intent);
+                            else
+                            {
+                                startActivity(intent);
+                                progressDialog.dismiss();
+                                finish();
+                            }
                         } else {
                             //Là lần đầu
                             Log.d(TAG, "User does not exist!");
+                            progressDialog.dismiss();
                             showDialogCFirstTimeLogin();
                         }
                     } else {
+                        progressDialog.dismiss();
                         Log.d(TAG, "Failed with: ", task.getException());
                     }
                 }
