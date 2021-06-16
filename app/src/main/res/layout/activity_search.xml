@@ -22,6 +22,19 @@
             android:src="@drawable/ic_arrow_left"
             android:layout_marginTop="4dp"/>
 
+        <TextView
+            android:id="@+id/txttitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@+id/btnBack"
+            android:text="Tìm kiếm: nội dung search"
+            android:textSize="14dp"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"/>
+
+
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -49,9 +62,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="Danh sách quán ăn yêu thích"
+                    android:text="Tìm thấy 0 kết quả"
                     android:textColor="@color/black"
-                    android:textSize="24dp"
+                    android:textSize="28dp"
                     android:textStyle="bold" />
 
                 <ListView

@@ -109,16 +109,13 @@ public class ThucDonFragment extends Fragment {
     private void setUpLvMonAn() {
 
         monAnList = new ArrayList<>();
-        monAnList.add(new MonAn("99","99","99","99","99"));
-        monAnList.add(new MonAn("99","99","99","99","99"));
-        monAnList.add(new MonAn("99","99","99","99","99"));
-        monAnList.add(new MonAn("99","99","99","99","99"));
 
         quanAnRef = firebaseFirestore.collection("QuanAn").document(IDQuanAn);
 
         adapter = new MonAnAdapter2(getContext(),monAnList,this::onItemClick);
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);;
         lvMonAn.setLayoutManager(gridLayoutManager);
+
         lvMonAn.setAdapter(adapter);
         LayDanhSachMonAn();
 

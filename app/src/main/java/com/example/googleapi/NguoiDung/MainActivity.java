@@ -27,6 +27,7 @@ import com.example.googleapi.DatabaseHelper;
 import com.example.googleapi.Login.HomeActivity;
 import com.example.googleapi.Models.QuanAn;
 import com.example.googleapi.R;
+import com.example.googleapi.Search.SearchActivity;
 import com.example.googleapi.StringSimilarity;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -65,6 +66,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -142,7 +144,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
                 switch (item.getItemId())
                 {
-                    case R.id.nav_yeuthich:drawerLayout.closeDrawers();break;
+                    case R.id.nav_yeuthich:openFav(); drawerLayout.closeDrawers();break;
                     case R.id.nav_about:drawerLayout.closeDrawers();break;
                     case R.id.nav_Contact:drawerLayout.closeDrawers();break;
                     case R.id.nav_DX: signOut(); drawerLayout.closeDrawers();break;
@@ -197,7 +199,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onSearchConfirmed(CharSequence text) {
                 //startSearch(text.toString(), true, null, true);
-                Search(text.toString());
+                if(!text.toString().isEmpty())
+                    Search(text.toString());
             }
 
             @Override
@@ -214,61 +217,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
-        //textChangeListener tạo auto prediction place
-//        materialSearchBar.addTextChangeListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                //place on google map
-//                FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest.builder()
-//                        .setCountry("VN")
-//                        .setTypeFilter(TypeFilter.ADDRESS)
-//                        .setSessionToken(token)
-//                        .setQuery(s.toString())
-//                        //.setOrigin( new LatLng( mLastKnowLocation.getLatitude(),mLastKnowLocation.getLongitude()))
-//                        //.setLocationBias(getBounds(mLastKnowLocation.getLatitude(),mLastKnowLocation.getLongitude(),1000,1000))
-//                        .build();
-//
-//                //Task<FindAutocompletePredictionsResponse> task = placesClient.findAutocompletePredictions(predictionsRequest);
-//
-//                placesClient.findAutocompletePredictions(predictionsRequest).addOnCompleteListener(new OnCompleteListener<FindAutocompletePredictionsResponse>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<FindAutocompletePredictionsResponse> task) {
-//                        if(task.isSuccessful())
-//                        {
-//                            FindAutocompletePredictionsResponse predictionsResponse = task.getResult();
-//                            if(predictionsResponse != null)
-//                            {
-//                                predictions = predictionsResponse.getAutocompletePredictions();
-//                                List<String> suggestionList = new ArrayList<>();
-//                                for(int i =0; i< predictions.size();i++)
-//                                {
-//                                    AutocompletePrediction prediction = predictions.get(i);
-//                                    suggestionList.add(prediction.getFullText(null).toString());
-//                                }
-//                                materialSearchBar.updateLastSuggestions(suggestionList);
-//                                if(!materialSearchBar.isSuggestionsVisible())
-//                                {
-//                                    materialSearchBar.showSuggestionsList();
-//                                }
-//                            }
-//                        } else {
-//                          Log.i("mytag","predition fetching task unsuccessful" + s);
-//                        }
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+
+    }
+
+    private void openFav() {
+        Intent intent = new Intent(this,FavoriteActivity.class);
+        startActivity(intent);
     }
 
     private void signOut() {
@@ -279,17 +233,23 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void Search(String toString) {
         Toast.makeText(getApplicationContext(),"Search",Toast.LENGTH_SHORT).show();
+        String string = toString.toString().toLowerCase(Locale.getDefault());
         quanAnSearchList = new ArrayList<>();
-        for (QuanAn i:quanAnArrayList
-             ) {
-            double x = StringSimilarity.similarity(toString,i.TenQuan);
-            if(x > 0.6)
+        for (QuanAn i:quanAnArrayList) {
+            String tenQuan = i.TenQuan.toString().toLowerCase(Locale.getDefault());
+            if(tenQuan.contains(string))
             {
-                Log.d("Search","Giống " + x);
+                Log.d("Search",toString+ " Giống " + i.TenQuan.toString().toLowerCase(Locale.getDefault()));
                 quanAnSearchList.add(i);
             }
-            else Log.d("Search","Không giống " + x);
+            else Log.d("Search",toString +" Không giống " + i.TenQuan.toString().toLowerCase(Locale.getDefault()));
         }
+        Intent intent = new Intent(this, SearchActivity.class);
+        Bundle b = new Bundle();
+        b.putSerializable("list",quanAnSearchList);
+        b.putString("title",toString);
+        intent.putExtras(b);
+        startActivity(intent);
     }
 
 

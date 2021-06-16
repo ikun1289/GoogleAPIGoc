@@ -107,6 +107,7 @@ public class ListMonAn extends AppCompatActivity {
         txtGioHoatDong.setText("Giờ mở cửa : " + quanAn.GioMoCua + "-" + quanAn.GioDongCua);
         txtLatlng.setText(quanAn.Lat + " - " + quanAn.Lng);
 
+
     }
 
     private void setUpViewPager(){

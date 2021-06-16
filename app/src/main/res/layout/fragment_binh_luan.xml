@@ -5,10 +5,55 @@
     android:layout_height="match_parent"
     tools:context=".NguoiDung.BinhLuanFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="8dp">
+        <EditText
+            android:id="@+id/edtBinhLuan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/n_bg"
+            android:padding="12dp"
+            android:hint="Bình luận"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="right">
+            <Button
+                android:id="@+id/btnHuy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hủy"
+                android:backgroundTint="@color/fui_transparent"
+                android:textColor="@color/black"
+                android:enabled="false"
+                />
+            <Button
+                android:id="@+id/btnDang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đăng"
+                android:layout_marginLeft="8dp"
+                android:enabled="false"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvBinhLuan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:horizontalSpacing="8dp"
+            android:numColumns="1"
+            android:nestedScrollingEnabled="true"/>
+
+    </LinearLayout>
 
 </FrameLayout>

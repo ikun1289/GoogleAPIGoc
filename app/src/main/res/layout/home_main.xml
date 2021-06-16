@@ -25,31 +25,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:src="@drawable/logo"
+            android:src="@drawable/logoo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintVertical_bias="0.43" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/logo_bg"
 
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            android:layout_marginTop="52dp"
+            android:background="@drawable/logo_bg"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView"
-            app:layout_constraintVertical_bias="1.68"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
             app:tabGravity="start"
             app:tabIconTint="#fa4a0c"
+
             app:tabIndicatorAnimationDuration="300"
             app:tabIndicatorColor="#fa4a0c"
             app:tabIndicatorFullWidth="false"
-
             app:tabIndicatorGravity="bottom"
             app:tabInlineLabel="true"
             app:tabPaddingEnd="0dp"
