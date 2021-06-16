@@ -90,16 +90,6 @@ public class FoodListFragmentChuQuan extends Fragment {
 
     private void LayDanhSachMonAn() {
 
-        monAnList.add(new MonAn("99","99","99","00","99"));
-        monAnList.add(new MonAn("99","99","99","00","99"));
-        monAnList.add(new MonAn("99","99","99","00","99"));
-        monAnList.add(new MonAn("99","99","99","00","99"));
-        monAnList.add(new MonAn("99","99","99","00","99"));
-        monAnList.add(new MonAn("99","99","99","00","99"));
-        monAnList.add(new MonAn("99","99","99","00","99"));
-        monAnList.add(new MonAn("99","99","99","00","99"));
-        monAnList.add(new MonAn("99","99","99","00","99"));
-
         quanAnRef.collection("MonAn").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {

@@ -1,6 +1,8 @@
 package com.example.googleapi.ChuQuan;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -87,16 +90,15 @@ public class HomeFegmentChuQuan extends Fragment implements OnMapReadyCallback {
     Location mLastKnowLocation;
     LocationCallback locationCallback;
     List<Marker> markerList;
-
-    MaterialSearchBar materialSearchBar;
     View mapview;
-    Button btnFind;
+    Button btnDoiViTri;
 
     BottomSheetListView listViewQuanAn;
     BottomSheetDialog dialog;
     ArrayList<QuanAn> quanAnArrayList;
     QuanAnAdapter adapter;
     LatLng latLng;
+    boolean isDoiViTri = false;
 
     private final float DEFAULT_ZOOM = 18;
 
@@ -133,40 +135,30 @@ public class HomeFegmentChuQuan extends Fragment implements OnMapReadyCallback {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        btnDoiViTri.setOnClickListener(v -> {
+            if(!isDoiViTri)
+            {
+                showDialog("Vào chế độ","Ấn vào bản đồ vị trí mới bạn muốn chọn");
+            }
+            else {
+                isDoiViTri = false;
+                btnDoiViTri.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.green_500));
+                btnDoiViTri.setText("Đổi vị trí quán ăn");
+            }
+
+
+        });
+
     }
 
     public void AnhXa(View view) {
-        materialSearchBar = view.findViewById(R.id.searchBar_chuquan);
-        btnFind = view.findViewById(R.id.btn_find_chuquan);
+        btnDoiViTri = view.findViewById(R.id.btn_doi_vi_tri);
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapAPI_chuquan);
         drawerLayout = view.findViewById(R.id.drawer_layout_chuquan);
 
     }
 
-    public void ThemVaoDachSachQuanAn(Cursor res) {
-        dialog = new BottomSheetDialog(getContext(), R.style.SheetDialog);
-        dialog.setContentView(R.layout.restaurant_bottom_sheet_layout);
-        listViewQuanAn = (BottomSheetListView) dialog.findViewById(R.id.listViewBtmSheet);
-        quanAnArrayList = new ArrayList<>();
 
-
-
-        adapter = new QuanAnAdapter(getContext(), R.layout.dong_quanan, quanAnArrayList);
-        listViewQuanAn.setAdapter(adapter);
-    }
-
-    public void ListQuanAnItemClick() {
-        listViewQuanAn.setOnItemClickListener((parent, view, position, id) -> {
-            //Mở activity xem món ăn của quán
-            Intent intent = new Intent(getContext(), ListMonAn.class);
-            Bundle b = new Bundle();
-            QuanAn quanAn = quanAnArrayList.get(position);
-            b.putString("IDQuanAn", quanAnArrayList.get(position).ID);
-            b.putSerializable("QuanAn", quanAn);
-            intent.putExtras(b);
-            startActivity(intent);
-        });
-    }
 
     //tính phạm vi hình vuông
     public static RectangularBounds getBounds(double lat0, double lng0, long dy, long dx) {
@@ -291,6 +283,31 @@ public class HomeFegmentChuQuan extends Fragment implements OnMapReadyCallback {
 
         // after generating our bitmap we are returning our bitmap.
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    private void showDialog(String title, String noidung) {
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_thong_bao);
+
+        //mapping
+        Button btnOK = (Button) dialog.findViewById(R.id.btnOK);
+        Button btnHuy = (Button) dialog.findViewById(R.id.btnHuy);
+        TextView txtTitle = dialog.findViewById(R.id.txttitle);
+        TextView txtNoiDung = dialog.findViewById(R.id.txtNoiDung);
+        //
+
+        txtTitle.setText(title);
+        txtNoiDung.setText(noidung);
+
+        btnOK.setOnClickListener(v -> {
+            isDoiViTri = true;
+            btnDoiViTri.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.orange));
+            btnDoiViTri.setText("Hủy");
+            dialog.dismiss();
+        });
+
+        btnHuy.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
     }
 
 

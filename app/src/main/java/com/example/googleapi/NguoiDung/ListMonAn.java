@@ -16,10 +16,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.googleapi.Adapter.MonAnAdapter;
 import com.example.googleapi.Adapter.MonAnAdapter2;
 import com.example.googleapi.Adapter.ViewPagerAdapter;
@@ -58,6 +60,7 @@ public class ListMonAn extends AppCompatActivity {
     ImageButton btnback, btnFav;
     TabLayout tabLayout;
     ViewPager viewPager;
+    ImageView imageView;
     boolean fav = false;
 
     @Override
@@ -106,6 +109,7 @@ public class ListMonAn extends AppCompatActivity {
         txtMoTa.setText("Mô tả : " + quanAn.MoTa);
         txtGioHoatDong.setText("Giờ mở cửa : " + quanAn.GioMoCua + "-" + quanAn.GioDongCua);
         txtLatlng.setText(quanAn.Lat + " - " + quanAn.Lng);
+        Glide.with(this).load(quanAn.imgQuanAn).placeholder(R.drawable.foodimg).into(imageView);
 
 
     }
@@ -218,6 +222,7 @@ public class ListMonAn extends AppCompatActivity {
         btnFav = findViewById(R.id.btnFav);
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.listmonan_viewpager);
+        imageView = findViewById(R.id.quananImg);
 
     }
 

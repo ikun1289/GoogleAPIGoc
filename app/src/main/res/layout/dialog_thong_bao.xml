@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="8dp"
+        >
+        <TextView
+            android:id="@+id/txttitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:text="Thông báo"
+            android:fontFamily="@font/roboto_bold"/>
+        <TextView
+            android:id="@+id/txtNoiDung"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nội dung"
+            android:layout_marginTop="16dp"
+            android:textSize="18dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            >
+            <Button
+                android:id="@+id/btnOK"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Xác nhận"
+                android:backgroundTint="@color/green_500"
+                />
+            <Button
+                android:id="@+id/btnHuy"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Hủy"
+                android:layout_marginLeft="24dp"
+                android:backgroundTint="@color/orange"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

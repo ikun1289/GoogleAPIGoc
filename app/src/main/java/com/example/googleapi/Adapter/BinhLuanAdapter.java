@@ -69,8 +69,13 @@ public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.ViewHo
         holder.txtTenNguoiDang.setText(binhLuan.email);
         holder.txtGioDang.setText(binhLuan.time);
         holder.txtNoiDung.setText(binhLuan.noiDung);
+        int vis = View.VISIBLE;
+        if(!binhLuan.IDNguoiGui.equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+        {
+            vis = View.INVISIBLE;
+        }
 
-        holder.btnDelete.setEnabled(binhLuan.IDNguoiGui.equals(FirebaseAuth.getInstance().getCurrentUser().getUid()));
+        holder.btnDelete.setVisibility(vis);
         holder.btnDelete.setOnClickListener(v -> {
             BinhLuan binhLuan1 = mData.get(position);
             DocumentReference quanAnRef = FirebaseFirestore.getInstance().collection("QuanAn").document(ListMonAn.IDQuanAn);

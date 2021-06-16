@@ -21,28 +21,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.mancj.materialsearchbar.MaterialSearchBar
-            android:id="@+id/searchBar_chuquan"
-            style="@style/MaterialSearchBarLight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="180dp"
-            android:elevation="5dp"
-            android:outlineSpotShadowColor="@color/green_500"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:mt_hint="Search a place"
-            app:mt_maxSuggestionsCount="5"
-            app:mt_navIconEnabled="true"
-            app:mt_placeholder="Seach a place"
-            app:mt_placeholderColor="#CACACA"
-            app:mt_speechMode="false" />
 
 
         <Button
-            android:id="@+id/btn_find_chuquan"
+            android:id="@+id/btn_doi_vi_tri"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -51,7 +33,7 @@
             android:layout_marginHorizontal="16dp"
             android:background="@drawable/btn"
             android:backgroundTint="@color/green_500"
-            android:text="Tìm các quán ăn gần đây"
+            android:text="Đổi vị trí quán ăn"
             android:textColor="@color/green_100" />
 
     </RelativeLayout>
