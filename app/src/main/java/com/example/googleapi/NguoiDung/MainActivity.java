@@ -13,12 +13,14 @@ import android.content.IntentSender;
 import android.database.Cursor;
 import android.database.CursorWindow;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.googleapi.Adapter.QuanAnAdapter;
@@ -44,6 +46,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -89,6 +92,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     BottomSheetListView listViewQuanAn;
     NavigationView navigationView;
     BottomSheetDialog dialog;
+    ArrayList<QuanAn> quanAnNearbyList;
     ArrayList<QuanAn> quanAnArrayList;
     ArrayList<QuanAn> quanAnSearchList;
     QuanAnAdapter adapter;
@@ -96,7 +100,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-    private final float DEFAULT_ZOOM = 20;
+    private final float DEFAULT_ZOOM = 18;
 
 
     @Override
@@ -119,7 +123,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //        }
 
 
-
+        quanAnNearbyList = new ArrayList<>();
         quanAnSearchList = new ArrayList<>();
         myDB = new DatabaseHelper(this);
         //Tạo những thứ liên quan tới google map API
@@ -139,6 +143,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 , R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        View header = navigationView.getHeaderView(0);
+        TextView txt = header.findViewById(R.id.nav_account);
+        txt.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
@@ -146,7 +153,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 {
                     case R.id.nav_yeuthich:openFav(); drawerLayout.closeDrawers();break;
                     case R.id.nav_about:drawerLayout.closeDrawers();break;
-                    case R.id.nav_Contact:drawerLayout.closeDrawers();break;
+                    case R.id.nav_Contact:sendEmail(); drawerLayout.closeDrawers();break;
                     case R.id.nav_DX: signOut(); drawerLayout.closeDrawers();break;
                     default:drawerLayout.closeDrawers();break;
                 }
@@ -161,22 +168,35 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //listener của btn tìm quán ăn gần nhất
         btnFind.setOnClickListener(v -> {
             //thêm cái tìm quán ăn gần nhất tại đây
-//            LatLng CHoRachGoi = new LatLng(9.896942, 105.664609);
-//            mapAPI.addMarker(new MarkerOptions().position(CHoRachGoi).title("Chợ Rạch Gòi"));
-//            mapAPI.moveCamera(CameraUpdateFactory.newLatLng(CHoRachGoi));
-//            markerList.clear();
-//            mapAPI.clear();
-//            if (quanAnArrayList.size() == 0) {
-//                Toast.makeText(HomeActivity.this, "NO DATA", Toast.LENGTH_SHORT).show();
-//            } else {
-//                for (int i = 0; i < quanAnArrayList.size(); i++) {
-//                    QuanAn quanAn = quanAnArrayList.get(i);
-//                    LatLng pos = new LatLng(Double.parseDouble(quanAn.Lat), Double.parseDouble(quanAn.Lng));
-//                    markerList.add(mapAPI.addMarker(new MarkerOptions().position(pos).title(quanAn.TenQuan)));
-//                }
-//            }
-//            mapAPI.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnowLocation.getLatitude(),
-//                    mLastKnowLocation.getLongitude()), DEFAULT_ZOOM));
+            LatLng CHoRachGoi = new LatLng(9.896942, 105.664609);
+            mapAPI.addMarker(new MarkerOptions().position(CHoRachGoi).title("Chợ Rạch Gòi"));
+            mapAPI.moveCamera(CameraUpdateFactory.newLatLng(CHoRachGoi));
+            markerList.clear();
+            mapAPI.clear();
+            if (quanAnArrayList.size() == 0) {
+                Toast.makeText(MainActivity.this, "NO DATA", Toast.LENGTH_SHORT).show();
+            } else {
+                quanAnNearbyList.clear();
+                for (int i = 0; i < quanAnArrayList.size(); i++) {
+                    QuanAn quanAn = quanAnArrayList.get(i);
+                    LatLng latLng = new LatLng(mLastKnowLocation.getLatitude(),
+                            mLastKnowLocation.getLongitude());
+                    if(!quanAn.Lat.isEmpty() && !quanAn.Lng.isEmpty())
+                    {
+                        float[] x = new float[1];
+                        LatLng pos = new LatLng(Double.parseDouble(quanAn.Lat), Double.parseDouble(quanAn.Lng));
+                        Location.distanceBetween(latLng.latitude,latLng.longitude,pos.latitude,pos.longitude,x);
+                        Log.d("MainActivity", "distance to "+quanAn.TenQuan+" "+x[0]);
+                        if(x[0] <= 2000)
+                        {
+                            quanAnNearbyList.add(quanAn);
+                            markerList.add(mapAPI.addMarker(new MarkerOptions().position(pos).title(quanAn.TenQuan)));
+                        }
+                    }
+                }
+            }
+            mapAPI.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnowLocation.getLatitude(),
+                    mLastKnowLocation.getLongitude()), DEFAULT_ZOOM-4));
 
 
             //cập nhật adapter bằng danh sách quán ăn mới lấy ra ở bước trên
@@ -218,6 +238,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
+    }
+
+    private void sendEmail() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:xhuuanng1289@gmail.com"));
+        intent.putExtra(Intent.EXTRA_SUBJECT,"Ứng dụng Find Restaurant");
+        startActivity(intent);
     }
 
     private void openFav() {
@@ -288,7 +314,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
-        adapter = new QuanAnAdapter(this, R.layout.dong_quanan, quanAnArrayList);
+        adapter = new QuanAnAdapter(this, R.layout.dong_quanan, quanAnNearbyList);
         listViewQuanAn.setAdapter(adapter);
     }
 
@@ -297,8 +323,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             //Mở activity xem món ăn của quán
             Intent intent = new Intent(MainActivity.this, ListMonAn.class);
             Bundle b = new Bundle();
-            QuanAn quanAn = quanAnArrayList.get(position);
-            b.putString("IDQuanAn", quanAnArrayList.get(position).ID);
+            QuanAn quanAn = quanAnNearbyList.get(position);
+            b.putString("IDQuanAn", quanAnNearbyList.get(position).ID);
             b.putSerializable("QuanAn", quanAn);
             intent.putExtras(b);
             startActivity(intent);

@@ -92,6 +92,7 @@ public class HomeFegmentChuQuan extends Fragment implements OnMapReadyCallback {
     List<Marker> markerList;
     View mapview;
     Button btnDoiViTri;
+    QuanAn currentQuanAn;
 
     BottomSheetListView listViewQuanAn;
     BottomSheetDialog dialog;
@@ -106,7 +107,7 @@ public class HomeFegmentChuQuan extends Fragment implements OnMapReadyCallback {
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.home_chuquan,container,false);
+        return inflater.inflate(R.layout.home_chuquan, container, false);
     }
 
     @Override
@@ -136,11 +137,9 @@ public class HomeFegmentChuQuan extends Fragment implements OnMapReadyCallback {
         toggle.syncState();
 
         btnDoiViTri.setOnClickListener(v -> {
-            if(!isDoiViTri)
-            {
-                showDialog("Vào chế độ","Ấn vào bản đồ vị trí mới bạn muốn chọn");
-            }
-            else {
+            if (!isDoiViTri) {
+                showDialog("Vào chế độ đổi vị trí", "Ấn vào bản đồ vị trí mới bạn muốn chọn");
+            } else {
                 isDoiViTri = false;
                 btnDoiViTri.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.green_500));
                 btnDoiViTri.setText("Đổi vị trí quán ăn");
@@ -157,7 +156,6 @@ public class HomeFegmentChuQuan extends Fragment implements OnMapReadyCallback {
         drawerLayout = view.findViewById(R.id.drawer_layout_chuquan);
 
     }
-
 
 
     //tính phạm vi hình vuông
@@ -203,31 +201,18 @@ public class HomeFegmentChuQuan extends Fragment implements OnMapReadyCallback {
 
         }
 
-        //đặt marker quán ăn
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = firebaseFirestore.collection("QuanAn")
-                .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        //event click on map
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
-            public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful())
-                {
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    QuanAn quanAn = documentSnapshot.toObject(QuanAn.class);
-                    double lat = Double.parseDouble(quanAn.Lat);
-                    double lng = Double.parseDouble(quanAn.Lng);
-                    latLng = new LatLng(lat,lng);
-                    Log.d(TAG, "onComplete: "+lat+"-"+lng);
-                    googleMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(lat,lng)).title("Place").icon(BitmapFromVector(getContext(),R.drawable.ic_google_maps)));
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,
-                            lng), 20
-                    ));
+            public void onMapClick(LatLng latLng) {
+                if (isDoiViTri) {
+                    showDialog2("Xác nhận đổi vị trí","Bạn có chắc muốn đổi vị trí quán ăn tới địa điểm này?",latLng);
                 }
             }
         });
+
+        //đặt marker quán ăn
+        setUpMap();
 
 
 
@@ -261,6 +246,34 @@ public class HomeFegmentChuQuan extends Fragment implements OnMapReadyCallback {
 //        });
 
 
+    }
+
+    private void setUpMap() {
+        mapAPI.clear();
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = firebaseFirestore.collection("QuanAn")
+                .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    QuanAn quanAn = documentSnapshot.toObject(QuanAn.class);
+                    currentQuanAn = quanAn;
+                    double lat = Double.parseDouble(quanAn.Lat);
+                    double lng = Double.parseDouble(quanAn.Lng);
+                    latLng = new LatLng(lat, lng);
+                    Log.d(TAG, "onComplete: " + lat + "-" + lng);
+                    mapAPI.addMarker(new MarkerOptions()
+                            .position(new LatLng(lat, lng)).title("Place").icon(BitmapFromVector(getContext(), R.drawable.ic_google_maps)));
+                    mapAPI.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                    mapAPI.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,
+                            lng), 20
+                    ));
+                }
+            }
+        });
     }
 
     private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
@@ -310,58 +323,54 @@ public class HomeFegmentChuQuan extends Fragment implements OnMapReadyCallback {
         dialog.show();
     }
 
+    private void showDialog2(String title, String noidung, LatLng latLng) {
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_thong_bao);
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 51) {
-//            if (resultCode == RESULT_OK) {
-//                getDeviceLocation();
-//            }
-//        }
-//    }
-//
-//    @SuppressLint("MissingPermission")
-//    private void getDeviceLocation() {
-//
-//        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Location> task) {
-//                if (task.isSuccessful()) {
-//                    mLastKnowLocation = task.getResult();
-//                    if (mLastKnowLocation != null) {
-//                        CameraUpdateFactory.zoomIn();
-//                        mapAPI.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnowLocation.getLatitude(),
-//                                mLastKnowLocation.getLongitude()), DEFAULT_ZOOM
-//                        ));
-//
-//                    } else {
-//                        final LocationRequest locationRequest = LocationRequest.create();
-//                        locationRequest.setInterval(10000);
-//                        locationRequest.setFastestInterval(5000);
-//                        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//                        locationCallback = new LocationCallback() {
-//                            @Override
-//                            public void onLocationResult(LocationResult locationResult) {
-//                                super.onLocationResult(locationResult);
-//                                if (locationResult == null) {
-//                                    return;
-//                                }
-//                                mLastKnowLocation = locationResult.getLastLocation();
-//                                CameraUpdateFactory.zoomIn();
-//                                mapAPI.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnowLocation.getLatitude(),
-//                                        mLastKnowLocation.getLongitude()), DEFAULT_ZOOM
-//                                ));
-//                                fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-//                            }
-//                        };
-//                        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
-//
-//                    }
-//                } else {
-//                    Toast.makeText(getContext(), "unable to get location", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//    }
+        //mapping
+        Button btnOK = (Button) dialog.findViewById(R.id.btnOK);
+        Button btnHuy = (Button) dialog.findViewById(R.id.btnHuy);
+        TextView txtTitle = dialog.findViewById(R.id.txttitle);
+        TextView txtNoiDung = dialog.findViewById(R.id.txtNoiDung);
+        //
+
+        txtTitle.setText(title);
+        txtNoiDung.setText(noidung);
+
+        btnOK.setOnClickListener(v -> {
+            isDoiViTri = false;
+            btnDoiViTri.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.green_500));
+            btnDoiViTri.setText("Đổi vị trí quán ăn");
+            doiViTri(latLng);
+            dialog.dismiss();
+        });
+
+        btnHuy.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
+    }
+
+    private void doiViTri(LatLng latLng) {
+        QuanAn quanAnUpdate = new QuanAn(currentQuanAn);
+        quanAnUpdate.Lng = String.valueOf(latLng.longitude);
+        quanAnUpdate.Lat = String.valueOf(latLng.latitude);
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = firebaseFirestore.collection("QuanAn")
+                .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        documentReference.set(quanAnUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                if(task.isSuccessful())
+                {
+                    Toast.makeText(getContext(),"Đổi vị trí thành công!",Toast.LENGTH_SHORT).show();
+                    currentQuanAn = quanAnUpdate;
+                    setUpMap();
+                }
+                else {
+                    Toast.makeText(getContext(),"Đổi vị trí thất bại",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 }
+
+

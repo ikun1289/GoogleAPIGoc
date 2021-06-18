@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class PickPlaceDialog extends AppCompatActivity implements OnMapReadyCallback {
 
 
-    double lat = 10.848413,lng = 106.773146;
+    double lat = 10.955449 ,lng = 106.849722;
     CreateQuanAnActivity activity = new CreateQuanAnActivity();
     GoogleMap mapAPI;
     View mMapView;

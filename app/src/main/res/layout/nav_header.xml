@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="176dp"
+    android:layout_height="234dp"
     android:orientation="vertical"
     android:background="@drawable/side_nav_bar"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:gravity="bottom|right"
-    android:padding="16dp">
+    android:gravity="bottom|left"
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="16dp">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_google"/>
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/foodimg"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

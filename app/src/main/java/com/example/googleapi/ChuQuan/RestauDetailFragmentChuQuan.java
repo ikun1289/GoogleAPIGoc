@@ -54,10 +54,28 @@ public class RestauDetailFragmentChuQuan extends Fragment {
             signOut();
         });
 
+        btnChinhsua.setOnClickListener(v -> {
+            moChinhSuaActivitity();
+        });
+
         btnCmt.setOnClickListener(v -> {
             moBinhLuanActivity();
         });
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        layThongTinQuanAn();
+    }
+
+    private void moChinhSuaActivitity() {
+        Intent intent = new Intent(getContext(),ChinhSuaQuanAn.class);
+        Bundle b = new Bundle();
+        b.putSerializable("QuanAn",quanAn);
+        intent.putExtras(b);
+        startActivity(intent);
     }
 
     private void moBinhLuanActivity() {

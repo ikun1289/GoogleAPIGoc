@@ -18,6 +18,8 @@ import com.example.googleapi.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignupTabFragment  extends Fragment {
+
+    RadioButton btnNguoiDung, btnChuQuan;
     EditText email,pass,cpass;
     RadioGroup Vaitro;
     Button signup;
@@ -37,6 +39,8 @@ public class SignupTabFragment  extends Fragment {
         signup = view.findViewById(R.id.s_button);
         Vaitro = view.findViewById(R.id.vaitro);
         mainActivity = (HomeActivity) getActivity();
+        btnChuQuan = view.findViewById(R.id.radioButtonChuQuan);
+        btnNguoiDung = view.findViewById(R.id.radioButtonNguoiDung);
         mAuth = FirebaseAuth.getInstance();
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,26 +53,17 @@ public class SignupTabFragment  extends Fragment {
                 if(checkValidate(nemail,npass,ncpass))
                 {
                     mainActivity.createAccount(nemail, npass, role);
-                    Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
                 }
-                else
-                    Toast.makeText(getActivity(), "no", Toast.LENGTH_SHORT).show();
             }
         });
 
-        Vaitro.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch(view.getId()) {
-                    case R.id.radioButtonNguoiDung:
-                        role = "nguoidung";
-                        break;
-                    case R.id.radioButtonChuQuan:
-                        role = "chuquan";
-                        break;
-                    default: role = "nguoidung"; break;
-                }
-            }
+
+        btnNguoiDung.setOnClickListener(v -> {
+            role = "nguoidung";
+        });
+
+        btnChuQuan.setOnClickListener(v -> {
+            role = "chuquan";
         });
 
         return view;
@@ -76,7 +71,7 @@ public class SignupTabFragment  extends Fragment {
 
     private boolean checkValidate(String emailS, String passS, String ncpass) {
 
-        if(passS.equals(ncpass)) {
+        if(!passS.equals(ncpass)) {
             cpass.setError("Không giống với password");
             return false;
         }

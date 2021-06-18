@@ -2,7 +2,7 @@ package com.example.googleapi.Models;
 
 import java.io.Serializable;
 
-public class QuanAn implements Serializable {
+public class QuanAn implements Serializable{
     public String ID;
     public String TenQuan;
     public String GioMoCua;
@@ -21,5 +21,18 @@ public class QuanAn implements Serializable {
         MoTa = moTa;
         Lat = lat;
         Lng = lng;
+        this.imgQuanAn = imgQuanAn;
+    }
+
+    public QuanAn(QuanAn quanAn)
+    {
+        this.ID = quanAn.ID;
+        TenQuan = quanAn.TenQuan;
+        GioMoCua = quanAn.GioMoCua;
+        GioDongCua = quanAn.GioDongCua;
+        MoTa = quanAn.MoTa;
+        Lat = quanAn.Lat;
+        Lng = quanAn.Lng;
+        imgQuanAn = quanAn.imgQuanAn;
     }
 }

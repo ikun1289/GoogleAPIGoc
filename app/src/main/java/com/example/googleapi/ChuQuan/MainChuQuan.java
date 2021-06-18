@@ -1,9 +1,12 @@
 package com.example.googleapi.ChuQuan;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -72,14 +75,17 @@ public class MainChuQuan extends FragmentActivity {
                 , R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        View header = navigationView.getHeaderView(0);
+        TextView txt = header.findViewById(R.id.nav_account);
+        txt.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
                 switch (item.getItemId())
                 {
-                    case R.id.nav_QuanAn:drawerLayout.closeDrawers();break;
+                    case R.id.nav_QuanAn:viewPager.setCurrentItem(0);drawerLayout.closeDrawers();break;
                     case R.id.nav_about:drawerLayout.closeDrawers();break;
-                    case R.id.nav_Contact:drawerLayout.closeDrawers();break;
+                    case R.id.nav_Contact:sendEmail(); drawerLayout.closeDrawers();break;
                     case R.id.nav_DX: signOut(); drawerLayout.closeDrawers();break;
                     default:drawerLayout.closeDrawers();break;
                 }
@@ -133,4 +139,10 @@ public class MainChuQuan extends FragmentActivity {
             }
         });
     }
+    private void sendEmail() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:xhuuanng1289@gmail.com"));
+        intent.putExtra(Intent.EXTRA_SUBJECT,"Ứng dụng Find Restaurant");
+        startActivity(intent);
+    }
+
 }
