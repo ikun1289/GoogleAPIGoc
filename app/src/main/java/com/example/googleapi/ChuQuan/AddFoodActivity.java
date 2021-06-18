@@ -17,31 +17,27 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.googleapi.Models.MonAn;
-import com.example.googleapi.Models.QuanAn;
 import com.example.googleapi.R;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import org.jetbrains.annotations.NotNull;
 
 public class AddFoodActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 999;
     String IDQuanAn;
     EditText editTextTenMon, editTextMoTa, editTextGia;
-    ImageButton btnUploadImg;
+    ImageView image;
+    ImageButton btnChooseImg, btnBack;
     Button btnAddFood;
     ProgressBar progressBar;
     DocumentReference quanAnRef;
@@ -53,6 +49,7 @@ public class AddFoodActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_food);
+        getSupportActionBar().hide();
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -68,13 +65,19 @@ public class AddFoodActivity extends AppCompatActivity {
         editTextMoTa = findViewById(R.id.etxtMoTa_addfood);
         editTextGia = findViewById(R.id.etxtGia_addfood);
         btnAddFood = findViewById(R.id.btnAddFood);
-        btnUploadImg = findViewById(R.id.uploadFoodImg_addfood);
+        image = findViewById(R.id.uploadFoodImg_addfood);
         progressBar = findViewById(R.id.progess_addfood);
+        btnChooseImg = findViewById(R.id.btnChooseImage);
+        btnBack = findViewById(R.id.btnBack);
         quanAnRef = FirebaseFirestore.getInstance().collection("QuanAn").document(IDQuanAn);
         storageReference = FirebaseStorage.getInstance().getReference("foodimg");
         //end mapping
 
         checkEmptyFunc();
+
+        btnBack.setOnClickListener(v -> {
+            finish();
+        });
 
         btnAddFood.setOnClickListener(v -> {
             MonAn monAnToAdd = new MonAn();
@@ -105,7 +108,7 @@ public class AddFoodActivity extends AppCompatActivity {
             });
         });
 
-        btnUploadImg.setOnClickListener(v -> {
+        btnChooseImg.setOnClickListener(v -> {
             OpenFileChoser();
         });
     }
@@ -173,7 +176,7 @@ public class AddFoodActivity extends AppCompatActivity {
                 && data!=null && data.getData()!=null)
         {
             imgUri = data.getData();
-            btnUploadImg.setImageURI(imgUri);
+            image.setImageURI(imgUri);
         }
     }
 

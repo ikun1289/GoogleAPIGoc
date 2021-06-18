@@ -37,25 +37,29 @@
             android:layout_height="match_parent"
             android:layout_marginTop="110dp"
             android:layout_marginBottom="8dp"
-            android:gravity="center"
+            android:gravity="bottom"
             android:orientation="vertical">
 
 
             <TextView
                 android:id="@+id/txtTenMonAn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="2dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="tên món ăn"
+                android:text="GOOD MORNING MOTHERFUCKER"
+                android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtGia"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:text="Giá"
                 android:textSize="20sp" />

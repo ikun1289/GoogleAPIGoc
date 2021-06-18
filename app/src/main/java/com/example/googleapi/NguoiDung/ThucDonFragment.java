@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -113,7 +114,9 @@ public class ThucDonFragment extends Fragment {
         quanAnRef = firebaseFirestore.collection("QuanAn").document(IDQuanAn);
 
         adapter = new MonAnAdapter2(getContext(),monAnList,this::onItemClick);
-        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);;
+        //StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);;
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2, GridLayoutManager.VERTICAL,false);
+
         lvMonAn.setLayoutManager(gridLayoutManager);
 
         lvMonAn.setAdapter(adapter);

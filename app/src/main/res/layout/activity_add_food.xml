@@ -5,8 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ChuQuan.AddFoodActivity"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white2"
+        android:elevation="8dp"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/fui_transparent"
+            android:src="@drawable/ic_arrow_left" />
+
+
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/etxtTenMon_addfood"
@@ -14,7 +34,12 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Tên món ăn (Bắt buộc)" />
+        android:hint="Tên món ăn (Bắt buộc)"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/n_bg"
+        android:padding="8dp"
+        android:layout_marginTop="16dp"
+        />
 
     <EditText
         android:id="@+id/etxtMoTa_addfood"
@@ -22,7 +47,11 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Mô tả món ăn (Bắt buộc)" />
+        android:background="@drawable/n_bg"
+        android:padding="8dp"
+        android:hint="Mô tả món ăn (Bắt buộc)"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"/>
 
     <EditText
         android:id="@+id/etxtGia_addfood"
@@ -30,26 +59,52 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="number"
-        android:hint="Giá (Bắt buộc)"/>
+        android:background="@drawable/n_bg"
+        android:padding="8dp"
+        android:hint="Giá (Bắt buộc)"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"/>
 
 <!--    để up hình lên-->
-    <ImageButton
-        android:scaleType="fitCenter"
-        android:id="@+id/uploadFoodImg_addfood"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/rounded_corners_light_gray"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+        <ImageView
+            android:scaleType="fitCenter"
+            android:id="@+id/uploadFoodImg_addfood"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/foodimg"
+            />
+        <ImageButton
+            android:id="@+id/btnChooseImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_image"
+            android:background="@color/fui_transparent"
+            />
+    </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/progess_addfood"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp"/>
     <Button
         android:id="@+id/btnAddFood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Thêm món ăn"
-        android:enabled="false"/>
+        android:textColor="@color/white2"
+        android:layout_marginHorizontal="16dp"
+        android:enabled="false"
+        android:background="@drawable/button_bg"
+        app:backgroundTint="@color/orange"/>
 
 </LinearLayout>
